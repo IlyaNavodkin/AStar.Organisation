@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A5472568-594B-4D31-B9C9-E1E801E220F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar.Organisation.Core.Domain", "AStar.Organisation.Core.Domain\AStar.Organisation.Core.Domain.csproj", "{7E0DA6AC-EED0-4085-8B8B-BD80FAC00254}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar.Organisation.Core.Application", "AStar.Organisation.Core.Application\AStar.Organisation.Core.Application.csproj", "{C33D58FB-E9BC-45AC-A072-50666DF1FE53}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{50F53480-6D64-4896-8F55-172870C5F823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar.Organization.Core.DomainServices", "AStar.Organization.Core.DomainServices\AStar.Organization.Core.DomainServices.csproj", "{1338849C-9A47-4EAD-A995-6AC8E7AAF789}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar.Organisation.Infrastructure.DAL", "AStar.Organisation.Infrastructure.DAL\AStar.Organisation.Infrastructure.DAL.csproj", "{707D4ECA-FDBB-4D94-A12D-6B3C0D086C7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar.Organization.Infrastructure.API", "AStar.Organization.Infrastructure.API\AStar.Organization.Infrastructure.API.csproj", "{66C5987A-C75C-443E-A9CD-A39F55328C4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar.Organization.Infrastructure.BLL", "AStar.Organization.Infrastructure.BLL\AStar.Organization.Infrastructure.BLL.csproj", "{DB296EB7-8900-4F3A-BE24-F2506AAA9628}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E0DA6AC-EED0-4085-8B8B-BD80FAC00254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E0DA6AC-EED0-4085-8B8B-BD80FAC00254}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E0DA6AC-EED0-4085-8B8B-BD80FAC00254}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E0DA6AC-EED0-4085-8B8B-BD80FAC00254}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C33D58FB-E9BC-45AC-A072-50666DF1FE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C33D58FB-E9BC-45AC-A072-50666DF1FE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C33D58FB-E9BC-45AC-A072-50666DF1FE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C33D58FB-E9BC-45AC-A072-50666DF1FE53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1338849C-9A47-4EAD-A995-6AC8E7AAF789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1338849C-9A47-4EAD-A995-6AC8E7AAF789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1338849C-9A47-4EAD-A995-6AC8E7AAF789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1338849C-9A47-4EAD-A995-6AC8E7AAF789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{707D4ECA-FDBB-4D94-A12D-6B3C0D086C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{707D4ECA-FDBB-4D94-A12D-6B3C0D086C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{707D4ECA-FDBB-4D94-A12D-6B3C0D086C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{707D4ECA-FDBB-4D94-A12D-6B3C0D086C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66C5987A-C75C-443E-A9CD-A39F55328C4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66C5987A-C75C-443E-A9CD-A39F55328C4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66C5987A-C75C-443E-A9CD-A39F55328C4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66C5987A-C75C-443E-A9CD-A39F55328C4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB296EB7-8900-4F3A-BE24-F2506AAA9628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB296EB7-8900-4F3A-BE24-F2506AAA9628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB296EB7-8900-4F3A-BE24-F2506AAA9628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB296EB7-8900-4F3A-BE24-F2506AAA9628}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7E0DA6AC-EED0-4085-8B8B-BD80FAC00254} = {A5472568-594B-4D31-B9C9-E1E801E220F2}
+		{C33D58FB-E9BC-45AC-A072-50666DF1FE53} = {A5472568-594B-4D31-B9C9-E1E801E220F2}
+		{1338849C-9A47-4EAD-A995-6AC8E7AAF789} = {A5472568-594B-4D31-B9C9-E1E801E220F2}
+		{707D4ECA-FDBB-4D94-A12D-6B3C0D086C7D} = {50F53480-6D64-4896-8F55-172870C5F823}
+		{66C5987A-C75C-443E-A9CD-A39F55328C4C} = {50F53480-6D64-4896-8F55-172870C5F823}
+		{DB296EB7-8900-4F3A-BE24-F2506AAA9628} = {50F53480-6D64-4896-8F55-172870C5F823}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,13 @@
+﻿using AStar.Domain.Entities;
+
+namespace AStar.Organization.Core.DomainServices.Repositories
+{
+    public interface IPositionDapperRepository: IDisposable
+    {
+        IEnumerable<Position> GetAll();
+        Position GetById(int id);
+        void Create(Position item);
+        void Update(Position item);
+        void Delete(int id);
+    }
+}
