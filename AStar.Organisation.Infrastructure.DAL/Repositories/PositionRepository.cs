@@ -84,6 +84,19 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
             }
         }
 
+        public async Task<IEnumerable<Position>> GetPositionsByDepartmentIdAndName(int departmentId, string name)
+        {
+            var query = "SELECT * FROM \"Positions\" WHERE \"DepartmentId\" = @DepartmentId AND \"Name\" = @Name";
+
+            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            {
+                var entities = await connection.QueryAsync<Position>(query, 
+                    new { DepartmentId = departmentId, Name = name });
+
+                return entities;
+            }
+        }
+
         private bool _disposed = false;
  
         public virtual void Dispose(bool disposing)

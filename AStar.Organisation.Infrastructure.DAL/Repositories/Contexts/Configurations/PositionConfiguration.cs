@@ -10,9 +10,7 @@ public class PositionConfiguration : IEntityTypeConfiguration<Position>
     {
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Name).IsRequired();
-        builder.HasIndex(p => p.Name);
-        
-        builder.Property(p => p.Name).IsRequired(false);
+        builder.HasIndex(p => new { p.Name, p.DepartmentId }).IsUnique();
         
         builder.HasOne(p => p.Department) 
             .WithMany(d => d.Positions)

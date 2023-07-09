@@ -10,10 +10,10 @@ namespace AStar.Organization.Infrastructure.BLL.Services
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly IRepository<Department> _departmentRepository;
+        private readonly IDepartmentRepository _departmentRepository;
         private readonly DepartmentValidator _departmentValidator;
 
-        public DepartmentService(IRepository<Department> departmentRepository, DepartmentValidator departmentValidator)
+        public DepartmentService(IDepartmentRepository departmentRepository, DepartmentValidator departmentValidator)
         {
             _departmentRepository = departmentRepository;
             _departmentValidator = departmentValidator;

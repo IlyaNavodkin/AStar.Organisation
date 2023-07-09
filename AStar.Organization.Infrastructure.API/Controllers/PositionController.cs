@@ -9,22 +9,13 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     public class PositionController : Controller
     {
         private readonly IPositionService _positionService;
-        private readonly IGetRandomApiService _getRandomApiService;
 
         public PositionController(IPositionService positionServiceService, 
             IGetRandomApiService getRandomApiService)
         {
             _positionService = positionServiceService;
-            _getRandomApiService = getRandomApiService;
         }
         
-        [HttpGet]
-        public async Task<IActionResult> GenerateRandomApi()
-        {
-            var cardInfoDto = await _getRandomApiService.GetRandomName();
-            
-            return Ok(cardInfoDto);
-        }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

@@ -20,19 +20,19 @@ public class PositionValidator : AbstractValidator<Position>
             .MaximumLength(20)
             .WithMessage("Название позиции не должно быть больше 20 символов.");
 
-        // RuleFor(item => item)
-        //     .Must(HaveUniqueChange)
-        //     .WithMessage("Позиция с похожим именем и отделом уже есть в базе данных.");
+        RuleFor(item => item)
+            .MustAsync(HaveUniqueChange)
+            .WithMessage("Позиция с похожим именем и отделом уже есть в базе данных.");
     }
     
-    // private bool HaveUniqueChange(Position item)
-    // {
-    //     var change = _repository.Ge
-    //         .FirstOrDefault(p => p.Description == item.Description && p.ChangeTime == item.ChangeTime );
-    //     
-    //     if (change is null) return true;
-    //     if (item.Id == change.Id) return true;
-    //     
-    //     return false;
-    // }
+    private async Task<bool> HaveUniqueChange(Position item, CancellationToken cancellationToken)
+    {
+        var positions = await _repository.GetPositionsByDepartmentIdAndName(item.DepartmentId,item.Name);
+
+        var duplicatePosition = positions.FirstOrDefault(p =>
+            p.Name.Equals(item.Name, StringComparison.OrdinalIgnoreCase) &&
+            p.DepartmentId == item.DepartmentId);
+
+        return duplicatePosition == null;
+    }
 }

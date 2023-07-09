@@ -6,9 +6,9 @@ namespace AStar.Organisation.Core.DomainServices.Validators;
 
 public class DepartmentValidator : AbstractValidator<Department>
 {
-    private readonly IRepository<Department> _departmentRepository;
+    private readonly IDepartmentRepository _departmentRepository;
 
-    public DepartmentValidator(IRepository<Department> departmentRepository)
+    public DepartmentValidator(IDepartmentRepository departmentRepository)
     {
         _departmentRepository = departmentRepository;
 
@@ -19,20 +19,5 @@ public class DepartmentValidator : AbstractValidator<Department>
         RuleFor(e => e.Name)
             .MaximumLength(20)
             .WithMessage("Название отдела не должно быть больше 30 символов.");
-
-        // RuleFor(item => item)
-        //     .Must(HaveUniqueChange)
-        //     .WithMessage("Позиция с похожим именем и отделом уже есть в базе данных.");
     }
-    
-    // private bool HaveUniqueChange(Position item)
-    // {
-    //     var change = _repository.Ge
-    //         .FirstOrDefault(p => p.Description == item.Description && p.ChangeTime == item.ChangeTime );
-    //     
-    //     if (change is null) return true;
-    //     if (item.Id == change.Id) return true;
-    //     
-    //     return false;
-    // }
 }
