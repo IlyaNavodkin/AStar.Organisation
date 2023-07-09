@@ -7,6 +7,7 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories.Contexts
     public class OrganizationContext : DbContext
     {
         public DbSet<Position> Positions { get; set; }
+        public DbSet<Department> Departments { get; set; }
 
         public OrganizationContext() { }
 
@@ -17,6 +18,9 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories.Contexts
         {
             modelBuilder.Entity<Position> ().ToTable ("Positions");
             modelBuilder.ApplyConfiguration(new PositionConfiguration());
+            
+            modelBuilder.Entity<Department> ().ToTable ("Departments");
+            modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
             
             base.OnModelCreating(modelBuilder);
         }
