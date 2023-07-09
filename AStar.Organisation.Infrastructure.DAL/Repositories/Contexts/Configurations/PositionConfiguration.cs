@@ -12,6 +12,8 @@ public class PositionConfiguration : IEntityTypeConfiguration<Position>
         builder.Property(p => p.Name).IsRequired();
         builder.HasIndex(p => p.Name);
         
+        builder.Property(p => p.Name).IsRequired(false);
+        
         builder.HasOne(p => p.Department) 
             .WithMany(d => d.Positions)
             .HasForeignKey(p => p.DepartmentId); 

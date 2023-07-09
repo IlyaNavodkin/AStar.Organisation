@@ -12,7 +12,9 @@ namespace AStar.Organization.Infrastructure.BLL
             IConfiguration configuration)
         {
             services.AddTransient<PositionValidator>();
+            services.AddTransient<DepartmentValidator>();
             services.AddTransient<IPositionService, PositionService>();
+            services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IGetRandomApiService, GetRandomApiService>();
 
             return services;
