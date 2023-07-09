@@ -22,8 +22,4 @@
       <ProjectReference Include="..\AStar.Organisation.Infrastructure.DAL\AStar.Organisation.Infrastructure.DAL.csproj" />
       <ProjectReference Include="..\AStar.Organization.Infrastructure.BLL\AStar.Organization.Infrastructure.BLL.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Constants" />
-    </ItemGroup>
 </Project>

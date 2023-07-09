@@ -19,7 +19,7 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
             return _context.Positions.ToList();
         }
  
-        public Position GetByid(int id)
+        public Position GetById(int id)
         {
             return _context.Positions.Find(id);
         }

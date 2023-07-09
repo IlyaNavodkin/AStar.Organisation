@@ -17,55 +17,57 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
             _connectionString = connectionString;
         }
  
-        public IEnumerable<Position> GetAll()
+        public async Task<IEnumerable<Position>> GetAll()
         {
             var query = "SELECT * FROM \"Positions\"";
 
             using (IDbConnection connection = new NpgsqlConnection(_connectionString))
             {
-                var entity = connection.Query<Position>(query);
+                var entity = await connection.QueryAsync<Position>(query);
                 
                 return entity;
             }
         }
  
-        public Position GetById(int id)
+        public async Task<Position> GetById(int id)
         {
-            var query = "SELECT * FROM \"Positions\" WHERE Id = @Id";
+            var query = "SELECT * FROM \"Positions\" WHERE \"Id\" = @Id";
 
             using (IDbConnection connection = new NpgsqlConnection(_connectionString))
             {
-                return connection.QuerySingleOrDefault<Position>(query, new { Id = id });
+                var entity = await connection.QueryFirstOrDefaultAsync<Position>(query, new { Id = id });
+                
+                return entity;
             }
         }
  
-        public void Create(Position position)
+        public async Task Create(Position position)
         {
-            var query = "INSERT INTO \"Positions\" (Name, DepartmentId) VALUES (@Name,@DepartmentId)";
+            var query = "INSERT INTO \"Positions\" (\"Name\", \"DepartmentId\") VALUES (@Name,@DepartmentId)";
 
             using (IDbConnection connection = new NpgsqlConnection(_connectionString))
             {
-                connection.Execute(query, position);
+                await connection.ExecuteAsync(query, position);
             }
         }
  
-        public void Update(Position position)
+        public async Task Update(Position position)
         {
-            var query = "UPDATE \"Positions\" SET Name = @Name, DepartmentId = @DepartmentId WHERE Id = @Id)";
+            var query = "UPDATE \"Positions\" SET \"Name\" = @Name, \"DepartmentId\" = @DepartmentId WHERE \"Id\" = @Id";
 
             using (IDbConnection connection = new NpgsqlConnection(_connectionString))
             {
-                connection.Execute(query, position);
+                await connection.ExecuteAsync(query, position);
             }
         }
  
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var query = "DELETE FROM \"Positions\" WHERE Id = @Id";
+            var query = "DELETE FROM \"Positions\" WHERE \"Id\" = @Id";
 
             using (IDbConnection connection = new NpgsqlConnection(_connectionString))
             {
-                connection.Execute(query, new {Id = id});
+                await connection.ExecuteAsync(query, new {Id = id});
             }
         }
 

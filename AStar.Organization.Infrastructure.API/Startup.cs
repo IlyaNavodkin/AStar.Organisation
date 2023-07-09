@@ -1,4 +1,6 @@
-﻿using AStar.Organisation.Infrastructure.API.Middlewares;
+﻿using AStar.Application.Services;
+using AStar.Organisation.Infrastructure.API.Middlewares;
+using AStar.Organisation.Infrastructure.API.Services;
 using AStar.Organisation.Infrastructure.DAL;
 using AStar.Organisation.Infrastructure.DAL.Repositories.Contexts;
 using AStar.Organization.Infrastructure.BLL;
@@ -26,6 +28,8 @@ namespace AStar.Organisation.Infrastructure.API
                     b.MigrationsAssembly("AStar.Organization.Infrastructure.API"));
             });
             
+            services.AddHttpClient();
+            services.AddSingleton<IConfigurationService, ConfigurationService>();
             services.AddDal(_configuration);
             services.AddBll(_configuration);
 

@@ -8,33 +8,45 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     [Route("api/[controller]/[action]")]
     public class PositionController : Controller
     {
-        readonly IPositionService _positionService;
-        
-        public PositionController(IPositionService positionServiceService)
+        private readonly IPositionService _positionService;
+        private readonly IConfiguration _configuration;
+        private readonly IGetRandomApiService _getRandomApiService;
+
+        public PositionController(IPositionService positionServiceService, IConfiguration configuration, 
+            IGetRandomApiService getRandomApiService)
         {
             _positionService = positionServiceService;
+            _configuration = configuration;
+            _getRandomApiService = getRandomApiService;
         }
         
         [HttpGet]
-        public ActionResult<IEnumerable<PositionDto>> GetAll()
+        public async Task<IActionResult> GenerateRandomApi()
         {
-            var dtos =  _positionService.GetAll();
+            var cardInfoDto = await _getRandomApiService.GetRandomName();
+            
+            return Ok(cardInfoDto);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var dtos =  await _positionService.GetAll();
             
             return Ok(dtos);
         }
         
         [HttpGet]
-        public ActionResult<PositionDto> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var dto =  _positionService.GetById(id);
+            var dto =  await _positionService.GetById(id);
             
             return Ok(dto);
         }
 
         [HttpPut]
-        public IActionResult Update(PositionDto dto)
+        public async Task<IActionResult> Update(PositionDto dto)
         {
-            _positionService.Update(dto);
+            await _positionService.Update(dto);
             
             return new ContentResult
             {
@@ -44,9 +56,9 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(PositionDto dto)
+        public async Task<IActionResult> Create(PositionDto dto)
         {
-            _positionService.Create(dto);
+            await _positionService.Create(dto);
             
             return new ContentResult
             {
@@ -56,9 +68,9 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
         }
         
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _positionService.Delete(id);
+            await _positionService.Delete(id);
             
             return new ContentResult
             {

@@ -4,10 +4,10 @@ namespace AStar.Application.Services
 {
     public interface IPositionService
     {
-        public IEnumerable<PositionDto> GetAll();
-        public PositionDto GetById(int id);
-        public void Create(PositionDto dto);
-        public PositionDto Update(PositionDto dto);
-        public void Delete(int id);
+        public Task<IEnumerable<PositionDto>> GetAll();
+        public Task<PositionDto> GetById(int id);
+        public Task Create(PositionDto dto);
+        public Task Update(PositionDto dto);
+        public Task Delete(int id);
     }
 }
