@@ -2,13 +2,8 @@
 
 namespace AStar.Organization.Core.DomainServices.Repositories
 {
-    public interface IPositionRepository: IDisposable
+    public interface IPositionRepository: IRepository<Position>
     {
-        IEnumerable<Position> GetAll();
-        Position GetById(int id);
-        void Create(Position item);
-        void Update(Position item);
-        void Delete(int id);
-        void Save();
+        Task<IEnumerable<Position>> GetPositionsByDepartmentId(int departmentId);
     }
 }

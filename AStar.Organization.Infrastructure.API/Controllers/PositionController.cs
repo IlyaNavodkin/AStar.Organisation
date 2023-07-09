@@ -9,14 +9,12 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     public class PositionController : Controller
     {
         private readonly IPositionService _positionService;
-        private readonly IConfiguration _configuration;
         private readonly IGetRandomApiService _getRandomApiService;
 
-        public PositionController(IPositionService positionServiceService, IConfiguration configuration, 
+        public PositionController(IPositionService positionServiceService, 
             IGetRandomApiService getRandomApiService)
         {
             _positionService = positionServiceService;
-            _configuration = configuration;
             _getRandomApiService = getRandomApiService;
         }
         

@@ -11,20 +11,17 @@ namespace AStar.Organization.Infrastructure.BLL.Services
     public class PositionService : IPositionService
     {
         private readonly IPositionRepository _positionRepository;
-        private readonly IPositionDapperRepository _positionDapperRepository;
         private readonly PositionValidator _positionValidator;
 
         public PositionService(IPositionRepository positionRepository, 
-            IPositionDapperRepository positionDapperRepository, 
             PositionValidator positionValidator)
         {
             _positionRepository = positionRepository;
-            _positionDapperRepository = positionDapperRepository;
             _positionValidator = positionValidator;
         }
         public async Task<IEnumerable<PositionDto>> GetAll()
         {
-            var entities = await _positionDapperRepository.GetAll();
+            var entities = await _positionRepository.GetAll();
             var dtos = entities.Select(e => new PositionDto
             {
                 Id = e.Id,
@@ -37,7 +34,7 @@ namespace AStar.Organization.Infrastructure.BLL.Services
 
         public async Task<PositionDto> GetById(int id)
         {
-            var entity = await _positionDapperRepository.GetById(id);
+            var entity = await _positionRepository.GetById(id);
             if (entity is null) throw new NotFoundEntityException(nameof(Position));
 
             var dto = new PositionDto
@@ -60,12 +57,12 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             var result = await _positionValidator.ValidateAsync(entity);
             if (!result.IsValid) throw new ValidationException(result.Errors);
             
-            await _positionDapperRepository.Create(entity);
+            await _positionRepository.Create(entity);
         }
 
         public async Task Update(PositionDto dto)
         {
-            var entity = await _positionDapperRepository.GetById(dto.Id);
+            var entity = await _positionRepository.GetById(dto.Id);
             if (entity is null) throw new NotFoundEntityException(nameof(Position));
 
             entity.Name = dto.Name;
@@ -75,15 +72,15 @@ namespace AStar.Organization.Infrastructure.BLL.Services
 
             if (!result.IsValid) throw new ValidationException(result.Errors);
             
-            await _positionDapperRepository.Update(entity);
+            await _positionRepository.Update(entity);
         }
 
         public async Task Delete(int id)
         {
-            var entity = await _positionDapperRepository.GetById(id);
+            var entity = await _positionRepository.GetById(id);
             if (entity is null) throw new NotFoundEntityException(nameof(Position));
             
-            await _positionDapperRepository.Delete(entity.Id);
+            await _positionRepository.Delete(entity.Id);
         }
     }
 }

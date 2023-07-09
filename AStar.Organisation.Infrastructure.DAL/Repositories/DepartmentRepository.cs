@@ -4,17 +4,18 @@ using AStar.Organisation.Infrastructure.DAL.Repositories.Contexts;
 using AStar.Organization.Core.DomainServices.Repositories;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
 
 namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {
-    public class DepartmentRepository : IRepository<Department>
+    public class DepartmentRepository : IDepartmentRepository
     {
         private readonly string _connectionString;
  
-        public DepartmentRepository(string connectionString)
+        public DepartmentRepository(IConfiguration configuration)
         {
-            _connectionString = connectionString;
+            _connectionString = configuration["DbConnection"];
         }
  
         public async Task<IEnumerable<Department>> GetAll()
@@ -70,7 +71,7 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
                 await connection.ExecuteAsync(query, new {Id = id});
             }
         }
-
+        
         private bool _disposed = false;
  
         public virtual void Dispose(bool disposing)

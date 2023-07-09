@@ -1,63 +1,94 @@
-﻿using AStar.Domain.Entities;
+﻿using System.Data;
+using AStar.Domain.Entities;
 using AStar.Organisation.Infrastructure.DAL.Repositories.Contexts;
 using AStar.Organization.Core.DomainServices.Repositories;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {
     public class PositionRepository : IPositionRepository
     {
-        private readonly OrganizationContext _context;
+        private readonly string _connectionString;
  
-        public PositionRepository(OrganizationContext context)
+        public PositionRepository(IConfiguration configuration)
         {
-            _context = context;
+            _connectionString = configuration["DbConnection"];
         }
  
-        public IEnumerable<Position> GetAll()
+        public async Task<IEnumerable<Position>> GetAll()
         {
-            return _context.Positions.ToList();
+            var query = "SELECT * FROM \"Positions\"";
+
+            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            {
+                var entity = await connection.QueryAsync<Position>(query);
+                
+                return entity;
+            }
         }
  
-        public Position GetById(int id)
+        public async Task<Position> GetById(int id)
         {
-            return _context.Positions.Find(id);
+            var query = "SELECT * FROM \"Positions\" WHERE \"Id\" = @Id";
+
+            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            {
+                var entity = await connection.QueryFirstOrDefaultAsync<Position>(query, new { Id = id });
+                
+                return entity;
+            }
         }
  
-        public void Create(Position position)
+        public async Task Create(Position position)
         {
-            _context.Positions.Add(position);
+            var query = "INSERT INTO \"Positions\" (\"Name\", \"DepartmentId\") VALUES (@Name,@DepartmentId)";
+
+            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            {
+                await connection.ExecuteAsync(query, position);
+            }
         }
  
-        public void Update(Position position)
+        public async Task Update(Position position)
         {
-            _context.Entry(position).State = EntityState.Modified;
+            var query = "UPDATE \"Positions\" SET \"Name\" = @Name, \"DepartmentId\" = @DepartmentId WHERE \"Id\" = @Id";
+
+            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            {
+                await connection.ExecuteAsync(query, position);
+            }
         }
  
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var entity = _context.Positions.Find(id);
-            if (entity != null)
-                _context.Positions.Remove(entity);
+            var query = "DELETE FROM \"Positions\" WHERE \"Id\" = @Id";
+
+            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            {
+                await connection.ExecuteAsync(query, new {Id = id});
+            }
         }
- 
-        public void Save()
+        
+        public async Task<IEnumerable<Position>> GetPositionsByDepartmentId(int department)
         {
-            _context.SaveChanges();
+            var query = "SELECT * FROM \"Position\" WHERE \"DepartmentId\" = @Id";
+
+            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            {
+                var entities = await connection.QueryAsync<Position>(query, new {Id = department});
+
+                return entities;
+            }
         }
- 
-        private bool disposed = false;
+
+        private bool _disposed = false;
  
         public virtual void Dispose(bool disposing)
         {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            disposed = true;
+            _disposed = true;
         }
  
         public void Dispose()

@@ -1,4 +1,5 @@
-﻿using AStar.Domain.Entities;
+﻿using AStar.Application.Services;
+using AStar.Domain.Entities;
 using AStar.Organisation.Infrastructure.DAL.Repositories;
 using AStar.Organization.Core.DomainServices.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -13,11 +14,8 @@ namespace AStar.Organisation.Infrastructure.DAL
         {
             var connectionString = configuration["DbConnection"];
 
-            services.AddScoped<IPositionDapperRepository, PositionDapperRepository>
-                (options => new PositionDapperRepository(connectionString));
-            services.AddScoped<IRepository<Department>, DepartmentRepository>
-                (options => new DepartmentRepository(connectionString));
             services.AddScoped<IPositionRepository, PositionRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
             return services;
         }
