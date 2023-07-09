@@ -47,40 +47,34 @@ namespace AStar.Organization.Infrastructure.BLL.Services
 
         public async Task Create(DepartmentDto dto)
         {
-            using (_unitOfWork)
+            var entity = new Department
             {
-                var entity = new Department
-                {
-                    Name = dto.Name
-                };
+                Name = dto.Name
+            };
 
-                var result = await _departmentValidator.ValidateAsync(entity);
-                if (!result.IsValid) throw new ValidationException(result.Errors);
-            
-  
-                await _unitOfWork.DepartmentRepository.Create(entity);
-            
-                _unitOfWork.Commit();
-            }
+            var result = await _departmentValidator.ValidateAsync(entity);
+            if (!result.IsValid) throw new ValidationException(result.Errors);
+        
+
+            await _unitOfWork.DepartmentRepository.Create(entity);
+        
+            _unitOfWork.Commit();
         }
 
         public async Task Update(DepartmentDto dto)
         {
-            using (_unitOfWork)
-            {
-                var entity = await _unitOfWork.DepartmentRepository.GetById(dto.Id);
-                if (entity is null) throw new NotFoundEntityException(nameof(Department));
+            var entity = await _unitOfWork.DepartmentRepository.GetById(dto.Id);
+            if (entity is null) throw new NotFoundEntityException(nameof(Department));
 
-                entity.Name = dto.Name;
-                
-                var result = await _departmentValidator.ValidateAsync(entity);
-
-                if (!result.IsValid) throw new ValidationException(result.Errors);
-
-                await _unitOfWork.DepartmentRepository.Update(entity);
+            entity.Name = dto.Name;
             
-                _unitOfWork.Commit();
-            }
+            var result = await _departmentValidator.ValidateAsync(entity);
+
+            if (!result.IsValid) throw new ValidationException(result.Errors);
+
+            await _unitOfWork.DepartmentRepository.Update(entity);
+        
+            _unitOfWork.Commit();
         }
 
         public async Task Delete(int id)

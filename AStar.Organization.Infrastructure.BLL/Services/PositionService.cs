@@ -22,19 +22,15 @@ namespace AStar.Organization.Infrastructure.BLL.Services
         }
         public async Task<IEnumerable<PositionDto>> GetAll()
         {
-            using (_unitOfWork)
+            var entities = await _unitOfWork.PositionRepository.GetAll();
+            var dtos = entities.Select(e => new PositionDto
             {
-                var state = ((UnitOfWork)_unitOfWork).Connection;
-                var entities = await _unitOfWork.PositionRepository.GetAll();
-                var dtos = entities.Select(e => new PositionDto
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    DepartmentId = e.DepartmentId,
-                });
+                Id = e.Id,
+                Name = e.Name,
+                DepartmentId = e.DepartmentId,
+            });
 
-                return dtos;
-            }
+            return dtos;
         }
 
         public async Task<PositionDto> GetById(int id)
@@ -54,54 +50,46 @@ namespace AStar.Organization.Infrastructure.BLL.Services
 
         public async Task Create(PositionDto dto)
         {
-            using (_unitOfWork)
+            var entity = new Position
             {
-                var entity = new Position
-                {
-                    Name = dto.Name,
-                    DepartmentId = dto.DepartmentId
-                };
+                Name = dto.Name,
+                DepartmentId = dto.DepartmentId
+            };
 
-                var result = await _positionValidator.ValidateAsync(entity);
-                if (!result.IsValid) throw new ValidationException(result.Errors);
-            
-                await _unitOfWork.PositionRepository.Create(entity);
-            
-                _unitOfWork.Commit();
-            }
+            var result = await _positionValidator.ValidateAsync(entity);
+            if (!result.IsValid) throw new ValidationException(result.Errors);
+        
+            await _unitOfWork.PositionRepository.Create(entity);
+        
+            _unitOfWork.Commit();
         }
 
         public async Task Update(PositionDto dto)
         {
-            using (_unitOfWork)
-            {
-                var entity = await _unitOfWork.PositionRepository.GetById(dto.Id);
-                if (entity is null) throw new NotFoundEntityException(nameof(Position));
+            var entity = await _unitOfWork.PositionRepository.GetById(dto.Id);
+            if (entity is null) throw new NotFoundEntityException(nameof(Position));
 
-                entity.Name = dto.Name;
-                entity.DepartmentId = dto.DepartmentId;
-            
-                var result = await _positionValidator.ValidateAsync(entity);
+            entity.Name = dto.Name;
+            entity.DepartmentId = dto.DepartmentId;
+        
+            var result = await _positionValidator.ValidateAsync(entity);
 
-                if (!result.IsValid) throw new ValidationException(result.Errors);
-            
-                await _unitOfWork.PositionRepository.Update(entity);
-            
-                _unitOfWork.Commit();
-            }
+            if (!result.IsValid) throw new ValidationException(result.Errors);
+        
+            await _unitOfWork.PositionRepository.Update(entity);
+
+            throw new Exception("Упси");
+            _unitOfWork.Commit();
         }
 
         public async Task Delete(int id)
         {
-            using (_unitOfWork)
-            {
-                var entity = await _unitOfWork.PositionRepository.GetById(id);
-                if (entity is null) throw new NotFoundEntityException(nameof(Position));
-            
-                await _unitOfWork.PositionRepository.Delete(entity.Id);
-            
-                _unitOfWork.Commit();
-            }
+            var entity = await _unitOfWork.PositionRepository.GetById(id);
+            if (entity is null) throw new NotFoundEntityException(nameof(Position));
+        
+            await _unitOfWork.PositionRepository.Delete(entity.Id);
+        
+            _unitOfWork.Commit();
         }
     }
 }

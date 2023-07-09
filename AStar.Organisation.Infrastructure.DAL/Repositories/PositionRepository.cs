@@ -12,12 +12,10 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
 public class PositionRepository : IPositionRepository
 {
     private IDbConnection _connection;
-    private IDbTransaction _transaction;
  
-    public PositionRepository(IDbConnection connection, IDbTransaction transaction)
+    public PositionRepository(IDbConnection connection)
     {
         _connection = connection;
-        _transaction = transaction;
     }
  
     public async Task<IEnumerable<Position>> GetAll()

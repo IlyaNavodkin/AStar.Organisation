@@ -27,16 +27,13 @@ public class PositionValidator : AbstractValidator<Position>
     
     private async Task<bool> HaveUniqueChange(Position item, CancellationToken cancellationToken)
     {
-        using (_unitOfWork)
-        {
-            var positions = await _unitOfWork
-                .PositionRepository.GetPositionsByDepartmentIdAndName(item.DepartmentId,item.Name);
+        var positions = await _unitOfWork
+            .PositionRepository.GetPositionsByDepartmentIdAndName(item.DepartmentId,item.Name);
 
-            var duplicatePosition = positions.FirstOrDefault(p =>
-                p.Name.Equals(item.Name, StringComparison.OrdinalIgnoreCase) &&
-                p.DepartmentId == item.DepartmentId);
+        var duplicatePosition = positions.FirstOrDefault(p =>
+            p.Name.Equals(item.Name, StringComparison.OrdinalIgnoreCase) &&
+            p.DepartmentId == item.DepartmentId);
 
-            return duplicatePosition == null;
-        }
+        return duplicatePosition == null;
     }
 }

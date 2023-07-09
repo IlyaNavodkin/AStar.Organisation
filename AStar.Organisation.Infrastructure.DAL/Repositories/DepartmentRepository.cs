@@ -12,12 +12,10 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
     public class DepartmentRepository : IDepartmentRepository
     {
         private readonly IDbConnection _connection;
-        private readonly IDbTransaction _transaction;
 
-        public DepartmentRepository(IDbConnection connection, IDbTransaction transaction)
+        public DepartmentRepository(IDbConnection connection)
         {
             _connection = connection;
-            _transaction = transaction;
         }
  
         public async Task<IEnumerable<Department>> GetAll()

@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Diagnostics;
 using AStar.Organisation.Core.DomainServices.Repositories;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -7,90 +8,60 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly string _connectionString;
-        public IDbConnection _connection;
-        public IDbTransaction _transaction;
-        private IPositionRepository _positionRepository;
-        private IDepartmentRepository _departmentRepository;
+        private readonly IDbConnection _dbConnection;
+        private IDbTransaction _dbTransaction;
+        private bool _disposed;
 
         public UnitOfWork(IConfiguration configuration)
         {
-            _connectionString = configuration["DbConnection"];
+            _dbConnection = new NpgsqlConnection(configuration["DbConnection"]);
+            _dbConnection.Open();
+            _dbTransaction = _dbConnection.BeginTransaction();
+            _disposed = false;
+        
+            PositionRepository = new PositionRepository(_dbConnection);
+            DepartmentRepository = new DepartmentRepository(_dbConnection);
+        
+            Debug.WriteLine("====================================");
+            Debug.WriteLine($"CONNECTION OPEN - Id[{_dbConnection.GetHashCode()}]");
+            Debug.WriteLine($"CONNECTION STATE - {_dbConnection.State}");
         }
-
-        public IDbConnection Connection
-        {
-            get
-            {
-                if (_connection == null)
-                    _connection = new NpgsqlConnection(_connectionString);
-
-                return _connection;
-            }
-        }
-
-        public IDbTransaction Transaction
-        {
-            get
-            {
-                if (_transaction == null)
-                {
-                    _transaction = Connection.BeginTransaction();
-                }
-
-                return _transaction;
-            }
-        }
-
-        public IPositionRepository PositionRepository
-        {
-            get
-            {
-                if (_positionRepository == null)
-                {
-                    _positionRepository = new PositionRepository(Connection, Transaction);
-                }
-
-                return _positionRepository;
-            }
-        }
-
-        public IDepartmentRepository DepartmentRepository
-        {
-            get
-            {
-                if (_departmentRepository == null)
-                {
-                    _departmentRepository = new DepartmentRepository(Connection, Transaction);
-                }
-
-                return _departmentRepository;
-            }
-        }
+    
+        public IPositionRepository PositionRepository { get; }
+        public IDepartmentRepository DepartmentRepository { get; }
 
         public void Commit()
         {
             try
             {
-                Transaction.Commit();
+                _dbTransaction.Commit();
+                Debug.WriteLine($"TRANSACTION COMMIT");
             }
             catch
             {
-                Transaction.Rollback();
+                _dbTransaction.Rollback();
+                Debug.WriteLine($"TRANSACTION ROLLBACK");
                 throw;
             }
             finally
             {
+                Debug.WriteLine($"CONNECTION STATE2 - {_dbConnection.State}");
                 Dispose();
             }
         }
 
         public void Dispose()
         {
-            Transaction?.Dispose();
-            Connection?.Dispose();
-            _positionRepository = null;
-            _departmentRepository = null;
+            if (!_disposed)
+            {
+                _dbTransaction?.Dispose();
+                _dbConnection?.Dispose();
+                _disposed = true;
+                
+                Debug.WriteLine($"TRANSACTION DISPOSE");
+                Debug.WriteLine($"CONNECTION DISPOSE - Id[{_dbConnection.GetHashCode()}]");
+                Debug.WriteLine($"CONNECTION STATE - {_dbConnection.State}");
+            }
         }
     }
 }
