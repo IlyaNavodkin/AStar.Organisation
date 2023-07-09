@@ -11,20 +11,22 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {
     public class DepartmentRepository : IDepartmentRepository
     {
-        private readonly string _connectionString;
- 
-        public DepartmentRepository(IConfiguration configuration)
+        private readonly IDbConnection _connection;
+        private readonly IDbTransaction _transaction;
+
+        public DepartmentRepository(IDbConnection connection, IDbTransaction transaction)
         {
-            _connectionString = configuration["DbConnection"];
+            _connection = connection;
+            _transaction = transaction;
         }
  
         public async Task<IEnumerable<Department>> GetAll()
         {
             var query = "SELECT * FROM \"Departments\"";
 
-            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            using (_connection)
             {
-                var entity = await connection.QueryAsync<Department>(query);
+                var entity = await _connection.QueryAsync<Department>(query);
                 
                 return entity;
             }
@@ -34,9 +36,9 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
         {
             var query = "SELECT * FROM \"Departments\" WHERE \"Id\" = @Id";
 
-            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            using (_connection)
             {
-                var entity = await connection.QueryFirstOrDefaultAsync<Department>(query, new { Id = id });
+                var entity = await _connection.QueryFirstOrDefaultAsync<Department>(query, new { Id = id });
                 
                 return entity;
             }
@@ -46,9 +48,9 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
         {
             var query = "INSERT INTO \"Departments\" (\"Name\") VALUES (@Name)";
 
-            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            using (_connection)
             {
-                await connection.ExecuteAsync(query, entity);
+                await _connection.ExecuteAsync(query, entity);
             }
         }
  
@@ -56,9 +58,9 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
         {
             var query = "UPDATE \"Departments\" SET \"Name\" = @Name WHERE \"Id\" = @Id";
 
-            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            using (_connection)
             {
-                await connection.ExecuteAsync(query, entity);
+                await _connection.ExecuteAsync(query, entity);
             }
         }
  
@@ -66,9 +68,9 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
         {
             var query = "DELETE FROM \"Departments\" WHERE \"Id\" = @Id";
 
-            using (IDbConnection connection = new NpgsqlConnection(_connectionString))
+            using (_connection)
             {
-                await connection.ExecuteAsync(query, new {Id = id});
+                await _connection.ExecuteAsync(query, new {Id = id});
             }
         }
         

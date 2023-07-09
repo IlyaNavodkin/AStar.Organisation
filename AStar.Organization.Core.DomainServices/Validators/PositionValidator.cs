@@ -6,11 +6,11 @@ namespace AStar.Organisation.Core.DomainServices.Validators;
 
 public class PositionValidator : AbstractValidator<Position>
 {
-    private readonly IPositionRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public PositionValidator(IPositionRepository repository)
+    public PositionValidator(IUnitOfWork unitOfWork)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
         
         RuleFor(e => e.Name)
             .MinimumLength(2)
@@ -27,12 +27,16 @@ public class PositionValidator : AbstractValidator<Position>
     
     private async Task<bool> HaveUniqueChange(Position item, CancellationToken cancellationToken)
     {
-        var positions = await _repository.GetPositionsByDepartmentIdAndName(item.DepartmentId,item.Name);
+        using (_unitOfWork)
+        {
+            var positions = await _unitOfWork
+                .PositionRepository.GetPositionsByDepartmentIdAndName(item.DepartmentId,item.Name);
 
-        var duplicatePosition = positions.FirstOrDefault(p =>
-            p.Name.Equals(item.Name, StringComparison.OrdinalIgnoreCase) &&
-            p.DepartmentId == item.DepartmentId);
+            var duplicatePosition = positions.FirstOrDefault(p =>
+                p.Name.Equals(item.Name, StringComparison.OrdinalIgnoreCase) &&
+                p.DepartmentId == item.DepartmentId);
 
-        return duplicatePosition == null;
+            return duplicatePosition == null;
+        }
     }
 }

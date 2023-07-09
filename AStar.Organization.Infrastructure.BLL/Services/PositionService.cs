@@ -4,37 +4,42 @@ using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.Exceptions;
 using AStar.Organisation.Core.DomainServices.Repositories;
 using AStar.Organisation.Core.DomainServices.Validators;
+using AStar.Organisation.Infrastructure.DAL.Repositories;
 using FluentValidation;
 
 namespace AStar.Organization.Infrastructure.BLL.Services
 {
     public class PositionService : IPositionService
     {
-        private readonly IPositionRepository _positionRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly PositionValidator _positionValidator;
 
-        public PositionService(IPositionRepository positionRepository, 
+        public PositionService(IUnitOfWork unitOfWork, 
             PositionValidator positionValidator)
         {
-            _positionRepository = positionRepository;
+            _unitOfWork = unitOfWork;
             _positionValidator = positionValidator;
         }
         public async Task<IEnumerable<PositionDto>> GetAll()
         {
-            var entities = await _positionRepository.GetAll();
-            var dtos = entities.Select(e => new PositionDto
+            using (_unitOfWork)
             {
-                Id = e.Id,
-                Name = e.Name,
-                DepartmentId = e.DepartmentId,
-            });
+                var state = ((UnitOfWork)_unitOfWork).Connection;
+                var entities = await _unitOfWork.PositionRepository.GetAll();
+                var dtos = entities.Select(e => new PositionDto
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    DepartmentId = e.DepartmentId,
+                });
 
-            return dtos;
+                return dtos;
+            }
         }
 
         public async Task<PositionDto> GetById(int id)
         {
-            var entity = await _positionRepository.GetById(id);
+            var entity = await _unitOfWork.PositionRepository.GetById(id);
             if (entity is null) throw new NotFoundEntityException(nameof(Position));
 
             var dto = new PositionDto
@@ -49,39 +54,54 @@ namespace AStar.Organization.Infrastructure.BLL.Services
 
         public async Task Create(PositionDto dto)
         {
-            var entity = new Position
+            using (_unitOfWork)
             {
-                Name = dto.Name,
-                DepartmentId = dto.DepartmentId
-            };
+                var entity = new Position
+                {
+                    Name = dto.Name,
+                    DepartmentId = dto.DepartmentId
+                };
 
-            var result = await _positionValidator.ValidateAsync(entity);
-            if (!result.IsValid) throw new ValidationException(result.Errors);
+                var result = await _positionValidator.ValidateAsync(entity);
+                if (!result.IsValid) throw new ValidationException(result.Errors);
             
-            await _positionRepository.Create(entity);
+                await _unitOfWork.PositionRepository.Create(entity);
+            
+                _unitOfWork.Commit();
+            }
         }
 
         public async Task Update(PositionDto dto)
         {
-            var entity = await _positionRepository.GetById(dto.Id);
-            if (entity is null) throw new NotFoundEntityException(nameof(Position));
+            using (_unitOfWork)
+            {
+                var entity = await _unitOfWork.PositionRepository.GetById(dto.Id);
+                if (entity is null) throw new NotFoundEntityException(nameof(Position));
 
-            entity.Name = dto.Name;
-            entity.DepartmentId = dto.DepartmentId;
+                entity.Name = dto.Name;
+                entity.DepartmentId = dto.DepartmentId;
             
-            var result = await _positionValidator.ValidateAsync(entity);
+                var result = await _positionValidator.ValidateAsync(entity);
 
-            if (!result.IsValid) throw new ValidationException(result.Errors);
+                if (!result.IsValid) throw new ValidationException(result.Errors);
             
-            await _positionRepository.Update(entity);
+                await _unitOfWork.PositionRepository.Update(entity);
+            
+                _unitOfWork.Commit();
+            }
         }
 
         public async Task Delete(int id)
         {
-            var entity = await _positionRepository.GetById(id);
-            if (entity is null) throw new NotFoundEntityException(nameof(Position));
+            using (_unitOfWork)
+            {
+                var entity = await _unitOfWork.PositionRepository.GetById(id);
+                if (entity is null) throw new NotFoundEntityException(nameof(Position));
             
-            await _positionRepository.Delete(entity.Id);
+                await _unitOfWork.PositionRepository.Delete(entity.Id);
+            
+                _unitOfWork.Commit();
+            }
         }
     }
 }

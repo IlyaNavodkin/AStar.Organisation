@@ -10,8 +10,7 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     {
         private readonly IPositionService _positionService;
 
-        public PositionController(IPositionService positionServiceService, 
-            IGetRandomApiService getRandomApiService)
+        public PositionController(IPositionService positionServiceService)
         {
             _positionService = positionServiceService;
         }
