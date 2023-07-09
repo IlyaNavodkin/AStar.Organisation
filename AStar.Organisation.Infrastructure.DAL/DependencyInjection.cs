@@ -9,11 +9,8 @@ namespace AStar.Organisation.Infrastructure.DAL
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddDal(this IServiceCollection services,
-            IConfiguration configuration)
+        public static IServiceCollection AddDal(this IServiceCollection services)
         {
-            var connectionString = configuration["DbConnection"];
-
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 

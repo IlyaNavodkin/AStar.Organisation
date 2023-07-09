@@ -8,8 +8,7 @@ namespace AStar.Organization.Infrastructure.BLL
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddBll(this IServiceCollection services,
-            IConfiguration configuration)
+        public static IServiceCollection AddBll(this IServiceCollection services)
         {
             services.AddTransient<PositionValidator>();
             services.AddTransient<DepartmentValidator>();

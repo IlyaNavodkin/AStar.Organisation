@@ -20,18 +20,18 @@ namespace AStar.Organisation.Infrastructure.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = _configuration["DbConnection"];
-
+            services.AddSingleton<IConfigurationService, ConfigurationService>();
+            
             services.AddDbContext<OrganizationContext>(options =>
             {
-                options.UseNpgsql(connectionString,b => 
+                options.UseNpgsql(_configuration["DbConnection"],b => 
                     b.MigrationsAssembly("AStar.Organization.Infrastructure.API"));
             });
             
             services.AddHttpClient();
-            services.AddSingleton<IConfigurationService, ConfigurationService>();
-            services.AddDal(_configuration);
-            services.AddBll(_configuration);
+            
+            services.AddDal();
+            services.AddBll();
 
             services.AddSwaggerGen(c =>
             {
