@@ -1,4 +1,4 @@
-﻿namespace AStar.Domain.Entities
+﻿namespace AStar.Organisation.Core.Domain.Entities
 {
     public class Department : EntityBase
     {

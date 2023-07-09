@@ -1,4 +1,4 @@
-﻿using AStar.Domain.Entities;
+﻿using AStar.Organisation.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

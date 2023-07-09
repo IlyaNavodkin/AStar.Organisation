@@ -1,4 +1,4 @@
-﻿using AStar.Domain.Entities;
+﻿using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Infrastructure.DAL.Repositories.Contexts.Configurations;
 using Microsoft.EntityFrameworkCore;
 

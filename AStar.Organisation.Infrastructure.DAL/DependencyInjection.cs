@@ -1,7 +1,5 @@
-﻿using AStar.Application.Services;
-using AStar.Domain.Entities;
+﻿using AStar.Organisation.Core.DomainServices.Repositories;
 using AStar.Organisation.Infrastructure.DAL.Repositories;
-using AStar.Organization.Core.DomainServices.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

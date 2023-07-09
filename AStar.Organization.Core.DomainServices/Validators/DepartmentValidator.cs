@@ -1,8 +1,8 @@
-﻿using AStar.Domain.Entities;
-using AStar.Organization.Core.DomainServices.Repositories;
+﻿using AStar.Organisation.Core.Domain.Entities;
+using AStar.Organisation.Core.DomainServices.Repositories;
 using FluentValidation;
 
-namespace AStar.Organization.Core.DomainServices.Validators;
+namespace AStar.Organisation.Core.DomainServices.Validators;
 
 public class DepartmentValidator : AbstractValidator<Department>
 {

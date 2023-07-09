@@ -1,7 +1,5 @@
-﻿using AStar.Application.Dtos;
-using AStar.Application.Services;
-using AStar.Domain.Entities;
-using AStar.Organization.Core.DomainServices.Repositories;
+﻿using AStar.Organisation.Core.Application.Dtos;
+using AStar.Organisation.Core.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AStar.Organisation.Infrastructure.API.Controllers

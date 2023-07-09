@@ -1,4 +1,4 @@
-﻿namespace AStar.Application.Dtos
+﻿namespace AStar.Organisation.Core.Application.Dtos
 {
     public class CardInfoDto
     {

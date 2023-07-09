@@ -1,6 +1,6 @@
-﻿using AStar.Application.Dtos;
+﻿using AStar.Organisation.Core.Application.Dtos;
 
-namespace AStar.Application.Services
+namespace AStar.Organisation.Core.Application.Services
 {
     public interface IDepartmentService
     {

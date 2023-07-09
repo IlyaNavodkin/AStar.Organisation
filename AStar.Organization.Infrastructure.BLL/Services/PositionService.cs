@@ -1,9 +1,9 @@
-﻿using AStar.Application.Dtos;
-using AStar.Application.Services;
-using AStar.Domain.Entities;
-using AStar.Organization.Core.DomainServices.Exceptions;
-using AStar.Organization.Core.DomainServices.Repositories;
-using AStar.Organization.Core.DomainServices.Validators;
+﻿using AStar.Organisation.Core.Application.Dtos;
+using AStar.Organisation.Core.Application.Services;
+using AStar.Organisation.Core.Domain.Entities;
+using AStar.Organisation.Core.DomainServices.Exceptions;
+using AStar.Organisation.Core.DomainServices.Repositories;
+using AStar.Organisation.Core.DomainServices.Validators;
 using FluentValidation;
 
 namespace AStar.Organization.Infrastructure.BLL.Services
@@ -40,6 +40,7 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             var dto = new PositionDto
             {
                 Name = entity.Name,
+                Id = entity.Id,
                 DepartmentId = entity.DepartmentId
             };
             

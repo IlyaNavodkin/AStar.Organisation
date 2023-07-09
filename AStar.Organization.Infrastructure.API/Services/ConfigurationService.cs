@@ -1,4 +1,4 @@
-﻿using AStar.Application.Services;
+﻿using AStar.Organisation.Core.Application.Services;
 
 namespace AStar.Organisation.Infrastructure.API.Services
 {

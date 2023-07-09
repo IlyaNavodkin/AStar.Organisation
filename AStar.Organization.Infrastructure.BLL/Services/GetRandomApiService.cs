@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
-using AStar.Application.Dtos;
-using AStar.Application.Services;
+using AStar.Organisation.Core.Application.Dtos;
+using AStar.Organisation.Core.Application.Services;
 
 namespace AStar.Organization.Infrastructure.BLL.Services
 {

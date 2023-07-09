@@ -1,4 +1,4 @@
-﻿namespace AStar.Application.Services
+﻿namespace AStar.Organisation.Core.Application.Services
 {
     public interface IConfigurationService
     {

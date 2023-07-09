@@ -1,7 +1,7 @@
 ﻿using System.Data;
-using AStar.Domain.Entities;
+using AStar.Organisation.Core.Domain.Entities;
+using AStar.Organisation.Core.DomainServices.Repositories;
 using AStar.Organisation.Infrastructure.DAL.Repositories.Contexts;
-using AStar.Organization.Core.DomainServices.Repositories;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

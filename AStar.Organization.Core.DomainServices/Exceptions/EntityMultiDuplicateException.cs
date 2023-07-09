@@ -1,4 +1,4 @@
-﻿namespace AStar.Organization.Core.DomainServices.Exceptions;
+﻿namespace AStar.Organisation.Core.DomainServices.Exceptions;
 
 public class EntityMultiDuplicateException : Exception
 {

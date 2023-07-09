@@ -1,4 +1,4 @@
-﻿using AStar.Application.Services;
+﻿using AStar.Organisation.Core.Application.Services;
 using AStar.Organisation.Infrastructure.API.Middlewares;
 using AStar.Organisation.Infrastructure.API.Services;
 using AStar.Organisation.Infrastructure.DAL;

@@ -1,6 +1,6 @@
-﻿using AStar.Domain.Entities;
+﻿using AStar.Organisation.Core.Domain.Entities;
 
-namespace AStar.Organization.Core.DomainServices.Repositories
+namespace AStar.Organisation.Core.DomainServices.Repositories
 {
     public interface IPositionRepository: IRepository<Position>
     {
