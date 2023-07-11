@@ -3,7 +3,7 @@ using AStar.Organisation.Core.Application.Services;
 using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.Exceptions;
 using AStar.Organisation.Core.DomainServices.Repositories;
-using AStar.Organisation.Core.DomainServices.Validators;
+using AStar.Organization.Infrastructure.BLL.Validators;
 using FluentValidation;
 
 namespace AStar.Organization.Infrastructure.BLL.Services

@@ -1,6 +1,6 @@
 ﻿using AStar.Organisation.Core.Application.Services;
-using AStar.Organisation.Core.DomainServices.Validators;
 using AStar.Organization.Infrastructure.BLL.Services;
+using AStar.Organization.Infrastructure.BLL.Validators;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

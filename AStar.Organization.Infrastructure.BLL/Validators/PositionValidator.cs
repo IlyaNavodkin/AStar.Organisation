@@ -2,7 +2,7 @@
 using AStar.Organisation.Core.DomainServices.Repositories;
 using FluentValidation;
 
-namespace AStar.Organisation.Core.DomainServices.Validators;
+namespace AStar.Organization.Infrastructure.BLL.Validators;
 
 public class PositionValidator : AbstractValidator<Position>
 {
