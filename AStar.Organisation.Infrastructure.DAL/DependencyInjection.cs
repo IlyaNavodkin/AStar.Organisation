@@ -1,6 +1,5 @@
-﻿using AStar.Organisation.Core.DomainServices.Repositories;
+﻿using AStar.Organisation.Core.DomainServices.IUnitOfWork;
 using AStar.Organisation.Infrastructure.DAL.Repositories;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AStar.Organisation.Infrastructure.DAL
@@ -9,7 +8,7 @@ namespace AStar.Organisation.Infrastructure.DAL
     {
         public static IServiceCollection AddDal(this IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
             return services;
         }

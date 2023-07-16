@@ -1,8 +1,8 @@
-﻿using AStar.Organisation.Core.Application.Services;
+﻿using AStar.Organisation.Core.Application.IServices;
 using AStar.Organisation.Infrastructure.API.Middlewares;
 using AStar.Organisation.Infrastructure.API.Services;
 using AStar.Organisation.Infrastructure.DAL;
-using AStar.Organisation.Infrastructure.DAL.Repositories.Contexts;
+using AStar.Organisation.Infrastructure.DAL.Contexts;
 using AStar.Organization.Infrastructure.BLL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;

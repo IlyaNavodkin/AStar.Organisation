@@ -1,9 +1,0 @@
-﻿using AStar.Organisation.Core.Application.Dtos;
-
-namespace AStar.Organisation.Core.Application.Services
-{
-    public interface IGetRandomApiService
-    {
-        public Task<CardInfoDto> GetRandomName();
-    }
-}
