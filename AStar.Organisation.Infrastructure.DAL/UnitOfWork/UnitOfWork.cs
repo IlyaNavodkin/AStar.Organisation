@@ -1,10 +1,11 @@
 ﻿using System.Data;
 using AStar.Organisation.Core.DomainServices.Repositories;
 using AStar.Organisation.Core.DomainServices.UnitOfWork;
+using AStar.Organisation.Infrastructure.DAL.Repositories;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
-namespace AStar.Organisation.Infrastructure.DAL.Repositories
+namespace AStar.Organisation.Infrastructure.DAL.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -26,6 +27,10 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
             _disposed = false;
         
             CustomerRepository = new CustomerRepository(_dbConnection);
+            ProductRepository = new ProductRepository(_dbConnection);
+            CartRepository = new CartRepository(_dbConnection);
+            ProductPhotoRepository = new ProductPhotoRepository(_dbConnection);
+            CartProductRepository = new CartProductRepository(_dbConnection);
         }
 
         public void Commit()

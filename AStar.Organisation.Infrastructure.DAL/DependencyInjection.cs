@@ -8,7 +8,7 @@ namespace AStar.Organisation.Infrastructure.DAL
     {
         public static IServiceCollection AddDal(this IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
             return services;
         }
