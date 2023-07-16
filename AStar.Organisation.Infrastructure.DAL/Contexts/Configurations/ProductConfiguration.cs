@@ -2,22 +2,26 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AStar.Organisation.Infrastructure.DAL.Contexts.Configurations;
-
-public class ProductConfiguration : IEntityTypeConfiguration<Product>
+namespace AStar.Organisation.Infrastructure.DAL.Contexts.Configurations
 {
-    public void Configure(EntityTypeBuilder<Product> builder)
+    public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
-        builder.HasKey(p => p.Id);
+        public void Configure(EntityTypeBuilder<Product> builder)
+        {
+            builder.HasKey(p => p.Id);
 
-        builder.Property(p => p.Name)
-            .HasMaxLength(255)
-            .IsRequired();
+            builder.Property(p => p.Name)
+                .HasMaxLength(255)
+                .IsRequired();
         
-        builder.Property(p => p.Price)
-            .IsRequired();
+            builder.Property(p => p.Price)
+                .IsRequired();
         
-        builder.Property(p => p.Description)
-            .IsRequired();
+            builder.Property(p => p.Description)
+                .IsRequired();
+        
+            builder.HasIndex(pp => new { pp.Name, pp.Description })
+                .IsUnique();
+        }
     }
 }

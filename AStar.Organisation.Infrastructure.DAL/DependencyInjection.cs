@@ -1,4 +1,4 @@
-﻿using AStar.Organisation.Core.DomainServices.UnitOfWork;
+﻿using AStar.Organisation.Core.DomainServices.IUnitOfWork;
 using AStar.Organisation.Infrastructure.DAL.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 

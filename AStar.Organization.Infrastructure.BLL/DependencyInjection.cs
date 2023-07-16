@@ -1,4 +1,4 @@
-﻿using AStar.Organisation.Core.Application.Services;
+﻿using AStar.Organisation.Core.Application.IServices;
 using AStar.Organization.Infrastructure.BLL.Services;
 using AStar.Organization.Infrastructure.BLL.Validators;
 using Microsoft.Extensions.DependencyInjection;

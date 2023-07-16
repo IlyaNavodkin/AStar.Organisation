@@ -1,18 +1,19 @@
 ﻿using AStar.Organisation.Core.Domain.Entities;
-using AStar.Organisation.Core.DomainServices.UnitOfWork;
+using AStar.Organisation.Core.DomainServices.IUnitOfWork;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
 using FluentValidation;
 
-namespace AStar.Organization.Infrastructure.BLL.Validators;
-
-public class CartProductValidator : AbstractValidator<CartProduct>
+namespace AStar.Organization.Infrastructure.BLL.Validators
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly OrganizationContext _context;
-
-    public CartProductValidator(IUnitOfWork unitOfWork, OrganizationContext context)
+    public class CartProductValidator : AbstractValidator<CartProduct>
     {
-        _unitOfWork = unitOfWork;
-        _context = context;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly OrganizationContext _context;
+
+        public CartProductValidator(IUnitOfWork unitOfWork, OrganizationContext context)
+        {
+            _unitOfWork = unitOfWork;
+            _context = context;
+        }
     }
 }

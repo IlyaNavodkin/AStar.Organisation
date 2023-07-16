@@ -2,20 +2,24 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AStar.Organisation.Infrastructure.DAL.Contexts.Configurations;
-
-public class CartConfiguration : IEntityTypeConfiguration<Cart>
+namespace AStar.Organisation.Infrastructure.DAL.Contexts.Configurations
 {
-    public void Configure(EntityTypeBuilder<Cart> builder)
+    public class CartConfiguration : IEntityTypeConfiguration<Cart>
     {
-        builder.HasKey(p => p.Id);
+        public void Configure(EntityTypeBuilder<Cart> builder)
+        {
+            builder.HasKey(p => p.Id);
 
-        builder.Property(p => p.CustomerId)
-            .IsRequired();
+            builder.Property(p => p.CustomerId)
+                .IsRequired();
         
-        builder.HasOne(p => p.Customer)
-            .WithMany()
-            .HasForeignKey(p => p.CustomerId)
-            .OnDelete(DeleteBehavior.SetNull);
+            builder.HasOne(p => p.Customer)
+                .WithMany()
+                .HasForeignKey(p => p.CustomerId)
+                .OnDelete(DeleteBehavior.SetNull);
+        
+            builder.HasIndex(pp => new { pp.CustomerId })
+                .IsUnique();
+        }
     }
 }

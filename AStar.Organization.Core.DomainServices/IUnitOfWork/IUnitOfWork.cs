@@ -1,6 +1,6 @@
-﻿using AStar.Organisation.Core.DomainServices.Repositories;
+﻿using AStar.Organisation.Core.DomainServices.IRepositories;
 
-namespace AStar.Organisation.Core.DomainServices.UnitOfWork
+namespace AStar.Organisation.Core.DomainServices.IUnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {

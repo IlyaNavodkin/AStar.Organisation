@@ -1,4 +1,4 @@
-﻿namespace AStar.Organisation.Core.Application.Services
+﻿namespace AStar.Organisation.Core.Application.IServices
 {
     public interface ICrudable<T>
     {

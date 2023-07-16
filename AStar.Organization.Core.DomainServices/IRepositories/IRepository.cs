@@ -1,6 +1,6 @@
 ﻿using AStar.Organisation.Core.Domain.Entities;
 
-namespace AStar.Organisation.Core.DomainServices.Repositories
+namespace AStar.Organisation.Core.DomainServices.IRepositories
 {
     public interface IRepository<T> : IDisposable where T : EntityBase
     {
