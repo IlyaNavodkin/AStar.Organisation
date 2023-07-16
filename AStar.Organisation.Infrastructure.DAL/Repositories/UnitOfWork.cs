@@ -1,6 +1,6 @@
 ﻿using System.Data;
-using System.Diagnostics;
 using AStar.Organisation.Core.DomainServices.Repositories;
+using AStar.Organisation.Core.DomainServices.UnitOfWork;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 

@@ -1,8 +1,8 @@
 ﻿using AStar.Organisation.Core.Domain.Entities;
-using AStar.Organisation.Infrastructure.DAL.Repositories.Contexts.Configurations;
+using AStar.Organisation.Infrastructure.DAL.Contexts.Configurations;
 using Microsoft.EntityFrameworkCore;
 
-namespace AStar.Organisation.Infrastructure.DAL.Repositories.Contexts
+namespace AStar.Organisation.Infrastructure.DAL.Contexts
 {
     public class OrganizationContext : DbContext
     {

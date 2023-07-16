@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AStar.Organisation.Infrastructure.DAL.Repositories.Contexts.Configurations;
+namespace AStar.Organisation.Infrastructure.DAL.Contexts.Configurations;
 
 public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 {

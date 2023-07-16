@@ -1,11 +1,7 @@
 ﻿using System.Data;
 using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.Repositories;
-using AStar.Organisation.Infrastructure.DAL.Repositories.Contexts;
 using Dapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Npgsql;
 
 namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {

@@ -1,7 +1,6 @@
-﻿using AStar.Organisation.Core.Application.Dtos;
-using AStar.Organisation.Core.Domain.Entities;
-using AStar.Organisation.Core.DomainServices.Repositories;
-using AStar.Organisation.Infrastructure.DAL.Repositories.Contexts;
+﻿using AStar.Organisation.Core.Domain.Entities;
+using AStar.Organisation.Core.DomainServices.UnitOfWork;
+using AStar.Organisation.Infrastructure.DAL.Contexts;
 using FluentValidation;
 
 namespace AStar.Organization.Infrastructure.BLL.Validators;

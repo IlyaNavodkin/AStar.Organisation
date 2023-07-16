@@ -1,9 +1,6 @@
 ﻿using AStar.Organisation.Core.Application.Services;
-using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organization.Infrastructure.BLL.Services;
 using AStar.Organization.Infrastructure.BLL.Validators;
-using FluentValidation;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AStar.Organization.Infrastructure.BLL

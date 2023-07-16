@@ -1,6 +1,4 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
-
-namespace AStar.Organisation.Core.Application.Dtos
+﻿namespace AStar.Organisation.Core.Application.Dtos
 {
     public class ProductPhotoDto 
     {

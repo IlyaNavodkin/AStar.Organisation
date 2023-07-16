@@ -1,6 +1,5 @@
-﻿using AStar.Organisation.Core.DomainServices.Repositories;
+﻿using AStar.Organisation.Core.DomainServices.UnitOfWork;
 using AStar.Organisation.Infrastructure.DAL.Repositories;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AStar.Organisation.Infrastructure.DAL
