@@ -20,7 +20,6 @@ namespace AStar.Organization.Infrastructure.BLL
             services.AddTransient<ICartProductService, CartProductService>();
             services.AddTransient<ICartService, CartService>();
             services.AddTransient<IProductPhotoService, ProductPhotoService>();
-            
             services.AddTransient<IGetRandomApiService, GetRandomApiService>();
 
             return services;
