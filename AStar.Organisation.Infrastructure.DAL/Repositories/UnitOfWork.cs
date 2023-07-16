@@ -19,33 +19,26 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
             _dbTransaction = _dbConnection.BeginTransaction();
             _disposed = false;
         
-            PositionRepository = new PositionRepository(_dbConnection);
-            DepartmentRepository = new DepartmentRepository(_dbConnection);
-        
-            Debug.WriteLine("====================================");
-            Debug.WriteLine($"CONNECTION OPEN - Id[{_dbConnection.GetHashCode()}]");
-            Debug.WriteLine($"CONNECTION STATE - {_dbConnection.State}");
+            CustomerRepository = new CustomerRepository(_dbConnection);
         }
-    
-        public IPositionRepository PositionRepository { get; }
-        public IDepartmentRepository DepartmentRepository { get; }
+        public ICustomerRepository CustomerRepository { get; }
+        public IProductRepository ProductRepository { get; }
+        public ICartRepository CartRepository { get; }
+        public IProductPhotoRepository ProductPhotoRepository { get; }
 
         public void Commit()
         {
             try
             {
                 _dbTransaction.Commit();
-                Debug.WriteLine($"TRANSACTION COMMIT");
             }
             catch
             {
                 _dbTransaction.Rollback();
-                Debug.WriteLine($"TRANSACTION ROLLBACK");
                 throw;
             }
             finally
             {
-                Debug.WriteLine($"CONNECTION STATE2 - {_dbConnection.State}");
                 Dispose();
             }
         }
@@ -57,10 +50,6 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
                 _dbTransaction?.Dispose();
                 _dbConnection?.Dispose();
                 _disposed = true;
-                
-                Debug.WriteLine($"TRANSACTION DISPOSE");
-                Debug.WriteLine($"CONNECTION DISPOSE - Id[{_dbConnection.GetHashCode()}]");
-                Debug.WriteLine($"CONNECTION STATE - {_dbConnection.State}");
             }
         }
     }

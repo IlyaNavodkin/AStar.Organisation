@@ -2,8 +2,10 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        IPositionRepository PositionRepository { get; }
-        IDepartmentRepository DepartmentRepository { get; }
+        ICustomerRepository CustomerRepository { get; }
+        IProductRepository ProductRepository { get; }
+        ICartRepository CartRepository { get; }
+        IProductPhotoRepository ProductPhotoRepository { get; }
         void Commit();
     }
 }
