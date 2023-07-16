@@ -6,9 +6,6 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories.Contexts
 {
     public class OrganizationContext : DbContext
     {
-        // public DbSet<Position> Positions { get; set; }
-        // public DbSet<Department> Departments { get; set; }
-
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductPhoto> ProductPhoto { get; set; }
         public DbSet<Cart> Cart { get; set; }
@@ -21,12 +18,6 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories.Contexts
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // modelBuilder.Entity<Position> ().ToTable ("Positions");
-            // modelBuilder.ApplyConfiguration(new PositionConfiguration());
-            //
-            // modelBuilder.Entity<Department> ().ToTable ("Departments");
-            // modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
-            
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new ProductPhotoConfiguration());
             modelBuilder.ApplyConfiguration(new CartConfiguration());

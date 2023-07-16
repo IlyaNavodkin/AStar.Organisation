@@ -1,5 +1,6 @@
 ﻿using AStar.Organisation.Core.Application.Dtos;
 using AStar.Organisation.Core.Application.Services;
+using AStar.Organisation.Core.DomainServices.Repositories;
 using AStar.Organisation.Infrastructure.API.Controllers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +11,12 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     public class CustomerController : Controller, ICrudableController<CustomerDto>
     {
         private readonly ICustomerService _customerService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(ICustomerService customerService, IUnitOfWork unitOfWork)
         {
             _customerService = customerService;
+            _unitOfWork = unitOfWork;
         }
         
         [HttpGet]
@@ -36,6 +39,25 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
         public async Task<IActionResult> Update(CustomerDto dto)
         {
             await _customerService.Update(dto);
+            
+            return new ContentResult
+            {
+                Content = $"Покупатель {dto.Name} обновлен",
+                StatusCode = 200
+            };
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateDapper(CustomerDto dto)
+        {
+            var entity = await _unitOfWork.CustomerRepository.GetById(dto.Id);
+
+            entity.Name = dto.Name;
+            entity.Email = dto.Email;
+            entity.Phone = dto.Phone;
+            
+            await _unitOfWork.CustomerRepository.Update(entity);
+            _unitOfWork.Commit();
             
             return new ContentResult
             {

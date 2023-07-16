@@ -11,6 +11,12 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
         private readonly IDbConnection _dbConnection;
         private IDbTransaction _dbTransaction;
         private bool _disposed;
+        
+        public ICustomerRepository CustomerRepository { get; }
+        public IProductRepository ProductRepository { get; }
+        public ICartRepository CartRepository { get; }
+        public IProductPhotoRepository ProductPhotoRepository { get; }
+        public ICartProductRepository CartProductRepository { get; }
 
         public UnitOfWork(IConfiguration configuration)
         {
@@ -21,10 +27,6 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
         
             CustomerRepository = new CustomerRepository(_dbConnection);
         }
-        public ICustomerRepository CustomerRepository { get; }
-        public IProductRepository ProductRepository { get; }
-        public ICartRepository CartRepository { get; }
-        public IProductPhotoRepository ProductPhotoRepository { get; }
 
         public void Commit()
         {

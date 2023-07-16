@@ -6,6 +6,7 @@
         IProductRepository ProductRepository { get; }
         ICartRepository CartRepository { get; }
         IProductPhotoRepository ProductPhotoRepository { get; }
+        ICartProductRepository CartProductRepository { get; }
         void Commit();
     }
 }
