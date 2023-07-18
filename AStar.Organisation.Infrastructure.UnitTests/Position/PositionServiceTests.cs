@@ -1,8 +1,9 @@
 // using AStar.Organisation.Core.Application.Dtos;
-// using AStar.Organisation.Core.DomainServices.Exceptions;
+// using AStar.Organisation.Core.Application.IServices;
 // using AStar.Organisation.Core.Domain.Entities;
-// using AStar.Organisation.Core.DomainServices.Repositories;
-// using AStar.Organization.Infrastructure.BLL.Services;
+// using AStar.Organisation.Core.DomainServices.IRepositories;
+// using AStar.Organisation.Core.DomainServices.IUnitOfWork;
+// using AStar.Organization.Infrastructure.BLL.Exceptions;
 // using AStar.Organization.Infrastructure.BLL.Validators;
 // using FluentValidation;
 // using Moq;
@@ -12,24 +13,22 @@
 //     [TestFixture]
 //     public class PositionServiceTests
 //     {
-//         private Mock<IPositionRepository> _positionRepositoryMock;
+//         private Mock<IUnitOfWork> _unitOfWork;
 //         private CustomerValidator _customerValidator;
-//         private PositionService _positionService;
+//         private ICustomerService _positionService;
 //         
 //         [SetUp]
 //         public void Setup()
 //         {
-//             _positionRepositoryMock = new Mock<IPositionRepository>();
-//             // _positionValidator = new PositionValidator(_positionRepositoryMock.Object);
-//             // _positionService = new PositionService(_positionRepositoryMock.Object, _positionValidator);
+//             _unitOfWork = new Mock<IUnitOfWork>();
 //         }
 //
 //         [Test]
 //         public async Task GetAll_Should_Return_All_PositionDtos()
 //         {
 //             // Arrange
-//             _positionRepositoryMock.Setup(r => r.GetAll()).ReturnsAsync(GetAllPositions());
-//             var expectedPositions = await _positionRepositoryMock.Object.GetAll();
+//             _unitOfWork.Setup(r => r.CustomerRepository.GetAll()).ReturnsAsync(GetAllPositions());
+//             var expectedPositions = await _unitOfWork.Object.GetAll();
 //
 //             // Act
 //             var actualPositions = await _positionService.GetAll();
@@ -42,8 +41,8 @@
 //         public async Task GetById_Should_Return_PositionDto()
 //         {
 //             // Arrange
-//             _positionRepositoryMock.Setup(r => r.GetById(1)).ReturnsAsync(GetById());
-//             var expected = await _positionRepositoryMock.Object.GetById(1);
+//             _unitOfWork.Setup(r => r.CustomerRepository.GetById(1)).ReturnsAsync(GetById());
+//             var expected = await _unitOfWork.Object.GetById(1);
 //
 //             // Act
 //             var actual = await _positionService.GetById(1);
@@ -59,7 +58,7 @@
 //         {
 //             // Arrange
 //             var id = 1;
-//             _positionRepositoryMock.Setup(r => r.GetById(1)).ReturnsAsync((Core.Domain.Entities.Position) null);
+//             _unitOfWork.Setup(r => r.CustomerRepository.GetById(1)).ReturnsAsync((Customer) null);
 //             
 //             // Act & Assert
 //             Assert.ThrowsAsync<NotFoundEntityException>(async () => await _positionService.GetById(id));
@@ -71,7 +70,7 @@
 //             // Arrange
 //             var positionDto = new PositionDto { Name = "New Position", DepartmentId = 1 };
 //             var entity = new Core.Domain.Entities.Position { Name = positionDto.Name, DepartmentId = positionDto.DepartmentId };
-//             _positionRepositoryMock.Setup(r => r
+//             _unitOfWork.Setup(r => r
 //                     .Create(It.IsAny<Core.Domain.Entities.Position>()))
 //                 .Returns(Task.CompletedTask);
 //             
@@ -79,45 +78,42 @@
 //             await _positionService.Create(positionDto);
 //
 //             // Assert
-//             _positionRepositoryMock.Verify(r => r
+//             _unitOfWork.Verify(r => r
 //                 .Create(It.Is<Core.Domain.Entities.Position>(p => p.Name == entity.Name && 
 //                                                                   p.DepartmentId == entity.DepartmentId)), Times.Once);
 //         }
 //         
 //         [Test]
 //         [TestCaseSource(nameof(GetNotValidPositions))]
-//         public void Create_Should_Throw_ValidationException_When_Entity_Fails_Validation(PositionDto positionDto)
+//         public void Create_Should_Throw_ValidationException_When_Entity_Fails_Validation(CustomerDto positionDto)
 //         {
 //             // Act & Assert
 //             Assert.ThrowsAsync<ValidationException>(async () => await _positionService.Create(positionDto));
 //         }
 //         
-//         private static IEnumerable<Core.Domain.Entities.Position> GetAllPositions()
+//         private static IEnumerable<Customer> GetAllPositions()
 //         {
-//             var entities = new List<Core.Domain.Entities.Position>
+//             var entities = new List<Customer>
 //             {
-//                 new() { Id=1, Name="Инженер", DepartmentId = 2},
-//                 new() { Id=2, Name="Секретарь", DepartmentId = 3},
-//                 new() { Id=3, Name="Офис менеджер", DepartmentId = 3},
-//                 new() { Id=4, Name="Работяга", DepartmentId = 4}
+//                 new Customer { Name = "John Doe", Email = "john.doe@example.com", Phone = "123456789" },
+//                 new Customer { Name = "Jane Smith", Email = "jane.smith@example.com", Phone = "987654321" },
+//                 new Customer { Name = "Bob Johnson", Email = "bob.johnson@example.com", Phone = "555555555" }
 //             };
 //             
 //             return entities;
 //         }
 //         
-//         private static IEnumerable<PositionDto> GetNotValidPositions()
+//         private static IEnumerable<CustomerDto> GetNotValidPositions()
 //         {
-//             var entities = new List<PositionDto>
+//             var entities = new List<CustomerDto>
 //             {
-//                 new() { Id=1, Name="", DepartmentId = 2},
-//                 new() { Id=2, Name="Ы", DepartmentId = 3},
-//                 new() { Id=3, Name="Офис менеджер Офис менеджер Офис менеджер Офис менеджер Офис менеджер", 
-//                     DepartmentId = 3},
+//                 new CustomerDto { Name = "John DoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoeDoe", 
+//                     Email = "john", Phone = "123456789" },
 //             };
 //             
 //             return entities;
 //         }
 //
-//         private static Core.Domain.Entities.Position GetById() => new() { Id = 1, Name = "Инженер", DepartmentId = 2 };
+//         private static Customer GetById() => new() { Id = 1, Name = "John Doe", Email = "john.doe@example.com", Phone = "123456789" };
 //     }
 // }

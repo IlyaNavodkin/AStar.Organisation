@@ -6,14 +6,14 @@ namespace AStar.Organisation.Infrastructure.API
     {
         public static void Main(string[] args)
         {
-            var path = AppDomain.CurrentDomain.BaseDirectory;
-            BuildWebHost(args).Run();
+            CreateHostBuilder(args).Build().Run();
         }
-        
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseDefaultServiceProvider(options => options.ValidateScopes = false)
-                .Build();
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }
