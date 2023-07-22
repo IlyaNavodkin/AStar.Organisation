@@ -36,7 +36,7 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
 
             await _connection.ExecuteAsync(query, entity);
         }
-     
+        
         public async Task Update(Product entity)
         {
             var query = "UPDATE \"Product\" SET \"Name\" = @Name, \"Description\" = @Description, \"Price\" = @Price WHERE \"Id\" = @Id";
