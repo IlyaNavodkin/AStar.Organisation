@@ -70,6 +70,9 @@ namespace AStar.Organisation.Infrastructure.IntegrationTests.Factories
                 }
             };
         }
+
+        public static Customer GetCustomer() => 
+            new() {Name = "Владимир Владимирович", Email = "VVP@gmail.com", Phone = "880055535"};
         public static List<Product> GetProducts()
         {
             return new List<Product>
@@ -136,5 +139,8 @@ namespace AStar.Organisation.Infrastructure.IntegrationTests.Factories
                 }
             };
         }
+        public static Product GetProduct() => 
+            new() {Name = "Робот пылесос с китая", Description = "Моет и сосет", Price = 200};
+
     }
 }
