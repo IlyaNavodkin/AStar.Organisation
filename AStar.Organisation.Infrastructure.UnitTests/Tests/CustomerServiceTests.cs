@@ -6,6 +6,7 @@ using AStar.Organisation.Infrastructure.API.Utills;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
 using AStar.Organization.Infrastructure.BLL.Services;
 using AStar.Organization.Infrastructure.BLL.Validators;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -22,6 +23,7 @@ namespace AStar.Organisation.Infrastructure.UnitTests.Tests
         public void Setup()
         {
             _unitOfWork = new Mock<IUnitOfWork>();
+            _customerValidator = new CustomerValidator();
         }
          
         [Test]
@@ -29,6 +31,7 @@ namespace AStar.Organisation.Infrastructure.UnitTests.Tests
         {
             // Arrange
             _unitOfWork.Setup(c => c.CustomerRepository.GetAll()).ReturnsAsync(EntityInitilizeUtill.GetCustomers());
+            
             var validUser = EntityInitilizeUtill.GetValidCustomer();
             var validDto = new CustomerDto
             {
@@ -44,7 +47,67 @@ namespace AStar.Organisation.Infrastructure.UnitTests.Tests
 
             // Assert
             
+            _unitOfWork.Verify(c => c.CustomerRepository.Create(It.IsAny<Customer>()), Times.Once);
+            _unitOfWork.Verify(c => c.SaveChanges(), Times.Once);
+        } 
+        
+        [Test]
+        public async Task CustomerService_Delete_ShouldDeleteValidUser()
+        {
+            // Arrange
             
+            var validEntity = EntityInitilizeUtill.GetValidCustomer();
+
+            _unitOfWork.Setup(c => c.CustomerRepository.GetById(validEntity.Id))
+                .ReturnsAsync(EntityInitilizeUtill.GetValidCustomer());
+
+            var entity = await _unitOfWork.Object.CustomerRepository.GetById(validEntity.Id);
+            
+            var validDto = new CustomerDto
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Email = entity.Email,
+                Phone = entity.Phone,
+            };
+            
+            // Act
+            
+            var service = new CustomerService(_unitOfWork.Object, _customerValidator);
+            await service.Delete(entity.Id);
+
+            // Assert
+            
+            _unitOfWork.Verify(c => c.CustomerRepository.Delete(validDto.Id), Times.Once);
+            _unitOfWork.Verify(c => c.SaveChanges(), Times.Once);
+        } 
+        
+        [Test]
+        public async Task CustomerService_Create_ShouldCatchValidationError()
+        {
+            // Arrange
+            
+            var invalidEntity = EntityInitilizeUtill.GetNotValidCustomer();
+
+            _unitOfWork.Setup(c => c.CustomerRepository.GetById(invalidEntity.Id))
+                .ReturnsAsync(invalidEntity);
+            
+            // Act
+            
+            var entity = await _unitOfWork.Object.CustomerRepository.GetById(invalidEntity.Id);
+            
+            var invalidDto = new CustomerDto
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Email = entity.Email,
+                Phone = entity.Phone,
+            };
+            
+            // Assert
+
+            var service = new CustomerService(_unitOfWork.Object, _customerValidator);
+            Assert.ThrowsAsync<ValidationException>(async () => await service.Create(invalidDto));
         } 
     }
 }

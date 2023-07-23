@@ -1,20 +1,12 @@
 ﻿using AStar.Organisation.Core.Domain.Entities;
-using AStar.Organisation.Core.DomainServices.IUnitOfWork;
-using AStar.Organisation.Infrastructure.DAL.Contexts;
 using FluentValidation;
 
 namespace AStar.Organization.Infrastructure.BLL.Validators
 {
     public class CustomerValidator : AbstractValidator<Customer>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly OrganizationContext _context;
-
-        public CustomerValidator(IUnitOfWork unitOfWork, OrganizationContext context)
+        public CustomerValidator()
         {
-            _unitOfWork = unitOfWork;
-            _context = context;
-
             RuleFor(e => e.Name)
                 .MinimumLength(2)
                 .WithMessage("Имя покупателя не должно быть меньше двух символов.");
