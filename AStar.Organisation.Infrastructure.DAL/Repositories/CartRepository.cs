@@ -1,67 +1,47 @@
 ﻿using System.Data;
 using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.IRepositories;
+using AStar.Organisation.Infrastructure.DAL.Contexts;
 using Dapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {
     public class CartRepository : ICartRepository
     {
-        private IDbConnection _connection;
-     
-        public CartRepository(IDbConnection connection)
+        private readonly OrganizationContext _context;
+
+        public CartRepository(OrganizationContext context)
         {
-            _connection = connection;
+            _context = context;
         }
      
         public async Task<IEnumerable<Cart>> GetAll()
         {
-            var query = "SELECT * FROM \"Cart\"";
-
-            var entities = await _connection.QueryAsync<Cart>(query);
-            return entities;
+            return await _context.Cart.ToListAsync();
         }
      
         public async Task<Cart> GetById(int id)
         {
-            var query = "SELECT * FROM \"Cart\" WHERE \"Id\" = @Id";
-
-            var entity = await _connection.QueryFirstOrDefaultAsync<Cart>(query, new { Id = id });
-            return entity;
+            return await _context.Cart.FindAsync(id);
         }
      
-        public async Task Create(Cart entity)
+        public void Create(Cart entity)
         {
-            var query = "INSERT INTO \"Cart\" (\"CustomerId\") VALUES (@CustomerId)";
-
-            await _connection.ExecuteAsync(query, entity);
+            _context.Cart.Add(entity);
         }
-     
-        public async Task Update(Cart entity)
-        {
-            var query = "UPDATE \"Cart\" SET \"CustomerId\" = @CustomerId WHERE \"Id\" = @Id";
-
-            await _connection.ExecuteAsync(query, entity);
-        }
-     
-        public async Task Delete(int id)
-        {
-            var query = "DELETE FROM \"Cart\" WHERE \"Id\" = @Id";
-
-            await _connection.ExecuteAsync(query, new { Id = id });
-        }
-
-        private bool _disposed = false;
         
-        public virtual void Dispose(bool disposing)
+        public void Update(Cart entity)
         {
-            _disposed = true;
+            _context.Cart.Update(entity);
         }
-
-        public void Dispose()
+     
+        public void Delete(int id)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            var entity = _context.Cart.Find(id);
+            
+            if(entity != null) 
+                _context.Cart.Remove(entity);
         }
     }
 }

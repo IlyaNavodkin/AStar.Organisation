@@ -14,18 +14,16 @@ namespace AStar.Organization.Infrastructure.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly CartValidator _cartValidator;
-        private readonly OrganizationContext _context;
 
-        public CartService(IUnitOfWork unitOfWork, CartValidator cartValidator, OrganizationContext context)
+        public CartService(IUnitOfWork unitOfWork, CartValidator cartValidator)
         {
             _unitOfWork = unitOfWork;
             _cartValidator = cartValidator;
-            _context = context;
         }
 
         public async Task<IEnumerable<CartDto>> GetAll()
         {
-            var entities = await _context.Cart.ToListAsync();
+            var entities = await _unitOfWork.CartRepository.GetAll();
 
             var dtos = entities.Select(e => new CartDto
             {
@@ -38,7 +36,7 @@ namespace AStar.Organization.Infrastructure.BLL.Services
 
         public async Task<CartDto> GetById(int id)
         {
-            var entity = await _context.Cart.FirstOrDefaultAsync(e => e.Id == id);
+            var entity = await _unitOfWork.CartRepository.GetById(id);
             
             if (entity is null) throw new NotFoundEntityException(nameof(Cart));
 
@@ -61,13 +59,13 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             var result = await _cartValidator.ValidateAsync(entity);
             if (!result.IsValid) throw new ValidationException(result.Errors);
 
-            await _context.Cart.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.CartRepository.Create(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task Update(CartDto dto)
         {
-            var entity = await _context.Cart.FirstOrDefaultAsync(e => e.Id == dto.Id);
+            var entity = await _unitOfWork.CartRepository.GetById(dto.Id);
             if (entity is null) throw new NotFoundEntityException(nameof(Cart));
 
             entity.CustomerId = dto.CustomerId;
@@ -75,17 +73,17 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             var result = await _cartValidator.ValidateAsync(entity);
             if (!result.IsValid) throw new ValidationException(result.Errors);
             
-            _context.Cart.Update(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.CartRepository.Update(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task Delete(int id)
         {
-            var entity = await _context.Cart.FirstOrDefaultAsync(e => e.Id == id);
+            var entity = await _unitOfWork.CartRepository.GetById(id);
             if (entity is null) throw new NotFoundEntityException(nameof(Cart));
             
-            _context.Cart.Remove(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.CartRepository.Delete(id);
+            _unitOfWork.SaveChanges();
         }
     }
 }

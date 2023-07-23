@@ -1,67 +1,47 @@
 ﻿using System.Data;
 using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.IRepositories;
+using AStar.Organisation.Infrastructure.DAL.Contexts;
 using Dapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {
     public class CartProductRepository : ICartProductRepository
     {
-        private IDbConnection _connection;
-     
-        public CartProductRepository(IDbConnection connection)
+        private readonly OrganizationContext _context;
+
+        public CartProductRepository(OrganizationContext context)
         {
-            _connection = connection;
+            _context = context;
         }
      
         public async Task<IEnumerable<CartProduct>> GetAll()
         {
-            var query = "SELECT * FROM \"CartProduct\"";
-
-            var entities = await _connection.QueryAsync<CartProduct>(query);
-            return entities;
+            return await _context.CartProduct.ToListAsync();
         }
      
         public async Task<CartProduct> GetById(int id)
         {
-            var query = "SELECT * FROM \"CartProduct\" WHERE \"Id\" = @Id";
-
-            var entity = await _connection.QueryFirstOrDefaultAsync<CartProduct>(query, new { Id = id });
-            return entity;
+            return await _context.CartProduct.FindAsync(id);
         }
      
-        public async Task Create(CartProduct entity)
+        public void Create(CartProduct entity)
         {
-            var query = "INSERT INTO \"CartProduct\" (\"ProductId\", \"CartId\") VALUES (@ProductId, @CartId)";
-
-            await _connection.ExecuteAsync(query, entity);
+            _context.CartProduct.Add(entity);
         }
-     
-        public async Task Update(CartProduct entity)
-        {
-            var query = "UPDATE \"CartProduct\" SET \"ProductId\" = @ProductId, \"CartId\" = @CartId WHERE \"Id\" = @Id";
-
-            await _connection.ExecuteAsync(query, entity);
-        }
-     
-        public async Task Delete(int id)
-        {
-            var query = "DELETE FROM \"CartProduct\" WHERE \"Id\" = @Id";
-
-            await _connection.ExecuteAsync(query, new { Id = id });
-        }
-
-        private bool _disposed = false;
         
-        public virtual void Dispose(bool disposing)
+        public void Update(CartProduct entity)
         {
-            _disposed = true;
+            _context.CartProduct.Update(entity);
         }
-
-        public void Dispose()
+     
+        public void Delete(int id)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            var entity = _context.CartProduct.Find(id);
+            
+            if(entity != null) 
+                _context.CartProduct.Remove(entity);
         }
     }
 }

@@ -1,67 +1,47 @@
 ﻿using System.Data;
 using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.IRepositories;
+using AStar.Organisation.Infrastructure.DAL.Contexts;
 using Dapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {
     public class ProductPhotoRepository : IProductPhotoRepository
     {
-        private IDbConnection _connection;
-     
-        public ProductPhotoRepository(IDbConnection connection)
+        private readonly OrganizationContext _context;
+
+        public ProductPhotoRepository(OrganizationContext context)
         {
-            _connection = connection;
+            _context = context;
         }
      
         public async Task<IEnumerable<ProductPhoto>> GetAll()
         {
-            var query = "SELECT * FROM \"ProductPhoto\"";
-
-            var entities = await _connection.QueryAsync<ProductPhoto>(query);
-            return entities;
+            return await _context.ProductPhoto.ToListAsync();
         }
      
         public async Task<ProductPhoto> GetById(int id)
         {
-            var query = "SELECT * FROM \"ProductPhoto\" WHERE \"Id\" = @Id";
-
-            var entity = await _connection.QueryFirstOrDefaultAsync<ProductPhoto>(query, new { Id = id });
-            return entity;
+            return await _context.ProductPhoto.FindAsync(id);
         }
      
-        public async Task Create(ProductPhoto entity)
+        public void Create(ProductPhoto entity)
         {
-            var query = "INSERT INTO \"ProductPhoto\" (\"ProductId\", \"Url\") VALUES (@CustomerId, @Url)";
-
-            await _connection.ExecuteAsync(query, entity);
+            _context.ProductPhoto.Add(entity);
         }
-     
-        public async Task Update(ProductPhoto entity)
-        {
-            var query = "UPDATE \"ProductPhoto\" SET \"CustomerId\" = @CustomerId, \"Url\" = @Url WHERE \"Id\" = @Id";
-
-            await _connection.ExecuteAsync(query, entity);
-        }
-     
-        public async Task Delete(int id)
-        {
-            var query = "DELETE FROM \"ProductPhoto\" WHERE \"Id\" = @Id";
-
-            await _connection.ExecuteAsync(query, new { Id = id });
-        }
-
-        private bool _disposed = false;
         
-        public virtual void Dispose(bool disposing)
+        public void Update(ProductPhoto entity)
         {
-            _disposed = true;
+            _context.ProductPhoto.Update(entity);
         }
-
-        public void Dispose()
+     
+        public void Delete(int id)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            var entity = _context.ProductPhoto.Find(id);
+            
+            if(entity != null) 
+                _context.ProductPhoto.Remove(entity);
         }
     }
 }

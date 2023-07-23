@@ -14,19 +14,16 @@ namespace AStar.Organization.Infrastructure.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ProductPhotoValidator _productPhotoValidator;
-        private readonly OrganizationContext _context;
 
-        public ProductPhotoService(IUnitOfWork unitOfWork, ProductPhotoValidator productPhotoValidator, 
-            OrganizationContext context)
+        public ProductPhotoService(IUnitOfWork unitOfWork, ProductPhotoValidator productPhotoValidator)
         {
             _unitOfWork = unitOfWork;
             _productPhotoValidator = productPhotoValidator;
-            _context = context;
         }
 
         public async Task<IEnumerable<ProductPhotoDto>> GetAll()
         {
-            var entities = await _context.ProductPhoto.ToListAsync();
+            var entities = await _unitOfWork.ProductPhotoRepository.GetAll();
 
             var dtos = entities.Select(e => new ProductPhotoDto
             {
@@ -40,7 +37,7 @@ namespace AStar.Organization.Infrastructure.BLL.Services
 
         public async Task<ProductPhotoDto> GetById(int id)
         {
-            var entity = await _context.ProductPhoto.FirstOrDefaultAsync(e => e.Id == id);
+            var entity = await _unitOfWork.ProductPhotoRepository.GetById(id);
             
             if (entity is null) throw new NotFoundEntityException(nameof(ProductPhoto));
 
@@ -65,13 +62,13 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             var result = await _productPhotoValidator.ValidateAsync(entity);
             if (!result.IsValid) throw new ValidationException(result.Errors);
 
-            await _context.ProductPhoto.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.ProductPhotoRepository.Create(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task Update(ProductPhotoDto dto)
         {
-            var entity = await _context.ProductPhoto.FirstOrDefaultAsync(e => e.Id == dto.Id);
+            var entity = await _unitOfWork.ProductPhotoRepository.GetById(dto.Id);
             if (entity is null) throw new NotFoundEntityException(nameof(ProductPhoto));
 
             entity.ProductId = dto.ProductId;
@@ -80,17 +77,17 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             var result = await _productPhotoValidator.ValidateAsync(entity);
             if (!result.IsValid) throw new ValidationException(result.Errors);
             
-            _context.ProductPhoto.Update(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.ProductPhotoRepository.Update(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task Delete(int id)
         {
-            var entity = await _context.ProductPhoto.FirstOrDefaultAsync(e => e.Id == id);
+            var entity = _unitOfWork.ProductPhotoRepository.GetById(id);
             if (entity is null) throw new NotFoundEntityException(nameof(ProductPhoto));
             
-            _context.ProductPhoto.Remove(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.ProductPhotoRepository.Delete(entity.Id);
+            _unitOfWork.SaveChanges();
         }
     }
 }

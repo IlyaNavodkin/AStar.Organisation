@@ -14,18 +14,16 @@ namespace AStar.Organization.Infrastructure.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ProductValidator _productValidator;
-        private readonly OrganizationContext _context;
 
-        public ProductService(IUnitOfWork unitOfWork, ProductValidator productValidator, OrganizationContext context)
+        public ProductService(IUnitOfWork unitOfWork, ProductValidator productValidator)
         {
             _unitOfWork = unitOfWork;
             _productValidator = productValidator;
-            _context = context;
         }
 
         public async Task<IEnumerable<ProductDto>> GetAll()
         {
-            var entities = await _context.Product.ToListAsync();
+            var entities = await _unitOfWork.ProductRepository.GetAll();
 
             var dtos = entities.Select(e => new ProductDto
             {
@@ -40,7 +38,7 @@ namespace AStar.Organization.Infrastructure.BLL.Services
 
         public async Task<ProductDto> GetById(int id)
         {
-            var entity = await _context.Product.FirstOrDefaultAsync(e => e.Id == id);
+            var entity = await _unitOfWork.ProductRepository.GetById(id);
             
             if (entity is null) throw new NotFoundEntityException(nameof(Product));
 
@@ -67,13 +65,13 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             var result = await _productValidator.ValidateAsync(entity);
             if (!result.IsValid) throw new ValidationException(result.Errors);
 
-            await _context.Product.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.ProductRepository.Create(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task Update(ProductDto dto)
         {
-            var entity = await _context.Product.FirstOrDefaultAsync(e => e.Id == dto.Id);
+            var entity = await _unitOfWork.ProductRepository.GetById(dto.Id);
             if (entity is null) throw new NotFoundEntityException(nameof(Product));
 
             entity.Name = dto.Name;
@@ -83,17 +81,17 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             var result = await _productValidator.ValidateAsync(entity);
             if (!result.IsValid) throw new ValidationException(result.Errors);
             
-            _context.Product.Update(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.ProductRepository.Update(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task Delete(int id)
         {
-            var entity = await _context.Product.FirstOrDefaultAsync(e => e.Id == id);
+            var entity = await _unitOfWork.ProductRepository.GetById(id);
             if (entity is null) throw new NotFoundEntityException(nameof(Product));
             
-            _context.Product.Remove(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.ProductRepository.Delete(entity.Id);
+            _unitOfWork.SaveChanges();
         }
     }
 }

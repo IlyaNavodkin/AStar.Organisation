@@ -14,18 +14,16 @@ namespace AStar.Organization.Infrastructure.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly CustomerValidator _customerValidator;
-        private readonly OrganizationContext _context;
 
-        public CustomerService(IUnitOfWork unitOfWork, CustomerValidator customerValidator, OrganizationContext context)
+        public CustomerService(IUnitOfWork unitOfWork, CustomerValidator customerValidator)
         {
             _unitOfWork = unitOfWork;
             _customerValidator = customerValidator;
-            _context = context;
         }
         
         public async Task<IEnumerable<CustomerDto>> GetAll()
         {
-            var entities = await _context.Customer.ToListAsync();
+            var entities = await _unitOfWork.CustomerRepository.GetAll();
 
             var dtos = entities.Select(e => new CustomerDto
             {
@@ -40,7 +38,7 @@ namespace AStar.Organization.Infrastructure.BLL.Services
 
         public async Task<CustomerDto> GetById(int id)
         {
-            var entity = await _context.Customer.FirstOrDefaultAsync(e => e.Id == id);
+            var entity = await _unitOfWork.CustomerRepository.GetById(id);
             
             if (entity is null) throw new NotFoundEntityException(nameof(Customer));
 
@@ -67,13 +65,13 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             var result = await _customerValidator.ValidateAsync(entity);
             if (!result.IsValid) throw new ValidationException(result.Errors);
 
-            await _context.Customer.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.CustomerRepository.Create(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task Update(CustomerDto dto)
         {
-            var entity = await _context.Customer.FirstOrDefaultAsync(e => e.Id == dto.Id);
+            var entity = await _unitOfWork.CustomerRepository.GetById(dto.Id);
             if (entity is null) throw new NotFoundEntityException(nameof(Customer));
 
             entity.Name = dto.Name;
@@ -83,17 +81,17 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             var result = await _customerValidator.ValidateAsync(entity);
             if (!result.IsValid) throw new ValidationException(result.Errors);
             
-            _context.Customer.Update(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.CustomerRepository.Update(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task Delete(int id)
         {
-            var entity = await _context.Customer.FirstOrDefaultAsync(e => e.Id == id);
+            var entity = await _unitOfWork.CustomerRepository.GetById(id);
             if (entity is null) throw new NotFoundEntityException(nameof(Customer));
             
-            _context.Customer.Remove(entity);
-            await _context.SaveChangesAsync();
+            _unitOfWork.CustomerRepository.Delete(entity.Id);
+            _unitOfWork.SaveChanges();
         }
     }
 }

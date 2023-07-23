@@ -1,67 +1,47 @@
 ﻿using System.Data;
 using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.IRepositories;
+using AStar.Organisation.Infrastructure.DAL.Contexts;
 using Dapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private IDbConnection _connection;
-     
-        public ProductRepository(IDbConnection connection)
+        private readonly OrganizationContext _context;
+
+        public ProductRepository(OrganizationContext context)
         {
-            _connection = connection;
+            _context = context;
         }
      
         public async Task<IEnumerable<Product>> GetAll()
         {
-            var query = "SELECT * FROM \"Product\"";
-
-            var entities = await _connection.QueryAsync<Product>(query);
-            return entities;
+            return await _context.Product.ToListAsync();
         }
      
         public async Task<Product> GetById(int id)
         {
-            var query = "SELECT * FROM \"Product\" WHERE \"Id\" = @Id";
-
-            var entity = await _connection.QueryFirstOrDefaultAsync<Product>(query, new { Id = id });
-            return entity;
+            return await _context.Product.FindAsync(id);
         }
      
-        public async Task Create(Product entity)
+        public void Create(Product entity)
         {
-            var query = "INSERT INTO \"Product\" (\"Name\", \"Description\", \"Price\") VALUES (@Name,@Description,@Price)";
-
-            await _connection.ExecuteAsync(query, entity);
+            _context.Product.Add(entity);
         }
         
-        public async Task Update(Product entity)
+        public void Update(Product entity)
         {
-            var query = "UPDATE \"Product\" SET \"Name\" = @Name, \"Description\" = @Description, \"Price\" = @Price WHERE \"Id\" = @Id";
-
-            await _connection.ExecuteAsync(query, entity);
+            _context.Product.Update(entity);
         }
      
-        public async Task Delete(int id)
+        public void Delete(int id)
         {
-            var query = "DELETE FROM \"Product\" WHERE \"Id\" = @Id";
-
-            await _connection.ExecuteAsync(query, new { Id = id });
-        }
-
-        private bool _disposed = false;
-        
-        public virtual void Dispose(bool disposing)
-        {
-            _disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            var entity = _context.Product.Find(id);
+            
+            if(entity != null) 
+                _context.Product.Remove(entity);
         }
     }
 }

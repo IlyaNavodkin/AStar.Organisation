@@ -11,12 +11,10 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     public class CustomerController : Controller, ICrudableController<CustomerDto>
     {
         private readonly ICustomerService _customerService;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public CustomerController(ICustomerService customerService, IUnitOfWork unitOfWork)
+        public CustomerController(ICustomerService customerService)
         {
             _customerService = customerService;
-            _unitOfWork = unitOfWork;
         }
         
         [HttpGet]
@@ -46,26 +44,7 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
                 StatusCode = 200
             };
         }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateDapper(CustomerDto dto)
-        {
-            var entity = await _unitOfWork.CustomerRepository.GetById(dto.Id);
-
-            entity.Name = dto.Name;
-            entity.Email = dto.Email;
-            entity.Phone = dto.Phone;
-            
-            await _unitOfWork.CustomerRepository.Update(entity);
-            _unitOfWork.Commit();
-            
-            return new ContentResult
-            {
-                Content = $"Покупатель {dto.Name} обновлен",
-                StatusCode = 200
-            };
-        }
-
+        
         [HttpPost]
         public async Task<IActionResult> Create(CustomerDto dto)
         {

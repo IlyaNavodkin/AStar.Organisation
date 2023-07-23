@@ -1,67 +1,47 @@
 ﻿using System.Data;
 using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.IRepositories;
+using AStar.Organisation.Infrastructure.DAL.Contexts;
 using Dapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private IDbConnection _connection;
-     
-        public CustomerRepository(IDbConnection connection)
+        private readonly OrganizationContext _context;
+
+        public CustomerRepository(OrganizationContext context)
         {
-            _connection = connection;
+            _context = context;
         }
      
         public async Task<IEnumerable<Customer>> GetAll()
         {
-            var query = "SELECT * FROM \"Customer\"";
-
-            var entities = await _connection.QueryAsync<Customer>(query);
-            return entities;
+            return await _context.Customer.ToListAsync();
         }
      
         public async Task<Customer> GetById(int id)
         {
-            var query = "SELECT * FROM \"Customer\" WHERE \"Id\" = @Id";
-
-            var entity = await _connection.QueryFirstOrDefaultAsync<Customer>(query, new { Id = id });
-            return entity;
+            return await _context.Customer.FindAsync(id);
         }
      
-        public async Task Create(Customer entity)
+        public void Create(Customer entity)
         {
-            var query = "INSERT INTO \"Customer\" (\"Name\", \"Email\", \"Phone\") VALUES (@Name,@Email,@Phone)";
-
-            await _connection.ExecuteAsync(query, entity);
+            _context.Customer.Add(entity);
         }
-     
-        public async Task Update(Customer entity)
-        {
-            var query = "UPDATE \"Customer\" SET \"Name\" = @Name, \"Email\" = @Email, \"Phone\" = @Phone WHERE \"Id\" = @Id";
-
-            await _connection.ExecuteAsync(query, entity);
-        }
-     
-        public async Task Delete(int id)
-        {
-            var query = "DELETE FROM \"Customer\" WHERE \"Id\" = @Id";
-
-            await _connection.ExecuteAsync(query, new { Id = id });
-        }
-
-        private bool _disposed = false;
         
-        public virtual void Dispose(bool disposing)
+        public void Update(Customer entity)
         {
-            _disposed = true;
+            _context.Customer.Update(entity);
         }
-
-        public void Dispose()
+     
+        public void Delete(int id)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            var entity = _context.Customer.Find(id);
+            
+            if(entity != null) 
+                _context.Customer.Remove(entity);
         }
     }
 }

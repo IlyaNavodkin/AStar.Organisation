@@ -11,26 +11,31 @@ using Moq;
 namespace AStar.Organisation.Infrastructure.UnitTests.Tests
 {
     [TestFixture]
-    public class ProductServiceTests
+    public class CustomerServiceTests
     {
-        private ProductValidator _customerValidator;
-        private ProductService _productService;
-        private Mock<OrganizationContext> _context;
-        private DbSet<Product> _mockProductDbSet;
+        private CustomerValidator _customerValidator;
+        private CustomerService _customerService;
+        private Mock<IUnitOfWork> _unitOfWork;
          
         [SetUp]
         public void Setup()
         {
-            _context = new Mock<OrganizationContext>();
+            _unitOfWork = new Mock<IUnitOfWork>();
         }
          
         [Test]
         public async Task GetProducts()
         {
             // Arrange
-            _context.Setup(c => c.Product.ToList()).Returns(EntityInitilizeUtill.GetProducts);
+            _unitOfWork.Setup(c => c.CustomerRepository.GetAll()).ReturnsAsync(EntityInitilizeUtill.GetCustomers());
             
+            // Act
             
+            var service = new CustomerService(_unitOfWork.Object, _customerValidator);
+
+            // Assert
+            
+            var allCustomers = service.GetAll();
         } 
     }
 }

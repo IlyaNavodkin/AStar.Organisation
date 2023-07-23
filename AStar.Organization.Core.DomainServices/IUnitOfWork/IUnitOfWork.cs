@@ -9,6 +9,6 @@ namespace AStar.Organisation.Core.DomainServices.IUnitOfWork
         ICartRepository CartRepository { get; }
         IProductPhotoRepository ProductPhotoRepository { get; }
         ICartProductRepository CartProductRepository { get; }
-        void Commit();
+        void SaveChanges();
     }
 }

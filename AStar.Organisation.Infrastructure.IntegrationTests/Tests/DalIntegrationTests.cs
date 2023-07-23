@@ -40,15 +40,15 @@ namespace AStar.Organisation.Infrastructure.IntegrationTests.Tests
 
                 foreach (var entity in products)
                 {
-                    await unitOfWork.ProductRepository.Create(entity);
+                    unitOfWork.ProductRepository.Create(entity);
                 }
                 
                 foreach (var entity in customers)
                 {
-                    await unitOfWork.CustomerRepository.Create(entity);
+                    unitOfWork.CustomerRepository.Create(entity);
                 }
                 
-                unitOfWork.Commit();
+                unitOfWork.SaveChanges();
             }
             
             using (var scope = webHost.Services.CreateScope())
@@ -84,9 +84,9 @@ namespace AStar.Organisation.Infrastructure.IntegrationTests.Tests
                 var allCustomers = await unitOfWork.CustomerRepository.GetAll();
                 var allProducts  = await unitOfWork.ProductRepository.GetAll();
                 
-                await unitOfWork.CustomerRepository.Delete(id);
-                await unitOfWork.ProductRepository.Delete(id);
-                unitOfWork.Commit();
+                unitOfWork.CustomerRepository.Delete(id);
+                unitOfWork.ProductRepository.Delete(id);
+                unitOfWork.SaveChanges();
             }
 
             using (var scope = webHost.Services.CreateScope())
@@ -131,9 +131,9 @@ namespace AStar.Organisation.Infrastructure.IntegrationTests.Tests
                 product.Description = "Новое Описание";
                 product.Price = 666;
 
-                await unitOfWork.ProductRepository.Update(product);
+                unitOfWork.ProductRepository.Update(product);
                 
-                unitOfWork.Commit();
+                unitOfWork.SaveChanges();
             }
 
             using (var scope = webHost.Services.CreateScope())
