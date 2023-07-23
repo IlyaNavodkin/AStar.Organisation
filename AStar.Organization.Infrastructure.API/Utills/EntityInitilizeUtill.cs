@@ -82,8 +82,11 @@ namespace AStar.Organisation.Infrastructure.API.Utills
             };
         }
 
-        public static Customer GetCustomer() => 
+        public static Customer GetValidCustomer() => 
             new() {Id = 11, Name = "Владимир Владимирович", Email = "VVP@gmail.com", Phone = "880055535"};
+        
+        public static Customer GetNotValidCustomer() => 
+            new() {Id = 11, Name = "В", Email = "VVP@gmail.com", Phone = "880055535"};
         
         public static List<Product> GetProducts()
         {

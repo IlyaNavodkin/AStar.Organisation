@@ -1,4 +1,5 @@
-﻿using AStar.Organisation.Core.Application.IServices;
+﻿using AStar.Organisation.Core.Application.Dtos;
+using AStar.Organisation.Core.Application.IServices;
 using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.IUnitOfWork;
 using AStar.Organisation.Infrastructure.API.Utills;
@@ -24,18 +25,26 @@ namespace AStar.Organisation.Infrastructure.UnitTests.Tests
         }
          
         [Test]
-        public async Task GetProducts()
+        public async Task CustomerService_Create_ShouldCreateValidUser()
         {
             // Arrange
             _unitOfWork.Setup(c => c.CustomerRepository.GetAll()).ReturnsAsync(EntityInitilizeUtill.GetCustomers());
+            var validUser = EntityInitilizeUtill.GetValidCustomer();
+            var validDto = new CustomerDto
+            {
+                Name = validUser.Name,
+                Email = validUser.Email,
+                Phone = validUser.Phone,
+            };
             
             // Act
             
             var service = new CustomerService(_unitOfWork.Object, _customerValidator);
+            await service.Create(validDto);
 
             // Assert
             
-            var allCustomers = service.GetAll();
+            
         } 
     }
 }
