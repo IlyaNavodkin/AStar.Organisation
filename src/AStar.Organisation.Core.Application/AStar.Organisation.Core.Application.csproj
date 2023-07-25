@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>AStar.Organisation.Core.Application</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AStar.Organisation.Core.Domain\AStar.Organisation.Core.Domain.csproj" />
+      <ProjectReference Include="..\AStar.Organization.Core.DomainServices\AStar.Organization.Core.DomainServices.csproj" />
+    </ItemGroup>
+
+</Project>
