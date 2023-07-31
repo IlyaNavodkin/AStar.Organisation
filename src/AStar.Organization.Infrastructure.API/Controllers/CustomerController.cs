@@ -1,6 +1,5 @@
 ﻿using AStar.Organisation.Core.Application.Dtos;
 using AStar.Organisation.Core.Application.IServices;
-using AStar.Organisation.Core.DomainServices.IUnitOfWork;
 using AStar.Organisation.Infrastructure.API.Controllers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

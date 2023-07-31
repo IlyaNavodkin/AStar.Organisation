@@ -1,8 +1,6 @@
-﻿using System.Data;
-using AStar.Organisation.Core.Domain.Entities;
+﻿using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.IRepositories;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
-using Dapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AStar.Organisation.Infrastructure.DAL.Repositories

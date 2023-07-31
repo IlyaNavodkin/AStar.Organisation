@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore;
+using AStar.Organisation.Infrastructure.API.Utills;
 
 namespace AStar.Organisation.Infrastructure.API
 {
@@ -6,7 +6,8 @@ namespace AStar.Organisation.Infrastructure.API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

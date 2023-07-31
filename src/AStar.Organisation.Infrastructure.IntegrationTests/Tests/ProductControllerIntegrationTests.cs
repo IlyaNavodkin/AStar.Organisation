@@ -3,7 +3,6 @@ using System.Text;
 using System.Text.Json;
 using AStar.Organisation.Core.Application.Dtos;
 using AStar.Organisation.Core.Application.IServices;
-using AStar.Organisation.Core.DomainServices.IUnitOfWork;
 using AStar.Organisation.Infrastructure.API.Utills;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
 using AStar.Organisation.Infrastructure.IntegrationTests.Factories;

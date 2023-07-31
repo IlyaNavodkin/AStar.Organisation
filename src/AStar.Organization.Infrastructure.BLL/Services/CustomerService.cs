@@ -2,11 +2,9 @@
 using AStar.Organisation.Core.Application.IServices;
 using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.IUnitOfWork;
-using AStar.Organisation.Infrastructure.DAL.Contexts;
 using AStar.Organization.Infrastructure.BLL.Exceptions;
 using AStar.Organization.Infrastructure.BLL.Validators;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace AStar.Organization.Infrastructure.BLL.Services
 {

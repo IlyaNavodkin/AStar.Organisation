@@ -1,10 +1,11 @@
 ﻿using AStar.Organisation.Core.Application.IServices;
+using AStar.Organisation.Core.DomainServices.IUnitOfWork;
 using AStar.Organisation.Infrastructure.API.Middlewares;
 using AStar.Organisation.Infrastructure.API.Services;
+using AStar.Organisation.Infrastructure.API.Utills;
 using AStar.Organisation.Infrastructure.DAL;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
 using AStar.Organization.Infrastructure.BLL;
-using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -28,13 +29,6 @@ namespace AStar.Organisation.Infrastructure.API
                 options.UseNpgsql(_configuration["DbConnection"],b => 
                     b.MigrationsAssembly("AStar.Organization.Infrastructure.API"));
             });
-            
-            // Регистрация сервиса Producer в контейнере зависимостей.
-            var producerConfig = new ProducerConfig
-            {
-                BootstrapServers = _configuration["Kafka:BootstrapServers"]
-            };
-            services.AddSingleton<IProducer<Null, string>>(_ => new ProducerBuilder<Null, string>(producerConfig).Build());
             
             services.AddHttpClient();
             
@@ -68,6 +62,8 @@ namespace AStar.Organisation.Infrastructure.API
             {
                 endpoints.MapControllers();
             });
+            
+            EntityInitilizeUtill.SeedTestsData(app.ApplicationServices);
         }
     }
 }

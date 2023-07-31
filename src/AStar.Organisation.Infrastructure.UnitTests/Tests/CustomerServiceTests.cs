@@ -1,13 +1,10 @@
 ﻿using AStar.Organisation.Core.Application.Dtos;
-using AStar.Organisation.Core.Application.IServices;
 using AStar.Organisation.Core.Domain.Entities;
 using AStar.Organisation.Core.DomainServices.IUnitOfWork;
 using AStar.Organisation.Infrastructure.API.Utills;
-using AStar.Organisation.Infrastructure.DAL.Contexts;
 using AStar.Organization.Infrastructure.BLL.Services;
 using AStar.Organization.Infrastructure.BLL.Validators;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace AStar.Organisation.Infrastructure.UnitTests.Tests

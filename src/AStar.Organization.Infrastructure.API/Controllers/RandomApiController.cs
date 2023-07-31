@@ -1,6 +1,4 @@
-﻿using System.Text;
-using AStar.Organisation.Core.Application.IServices;
-using Confluent.Kafka;
+﻿using AStar.Organisation.Core.Application.IServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AStar.Organisation.Infrastructure.API.Controllers
@@ -10,11 +8,9 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     public class RandomApiController : Controller
     {
         private readonly IGetRandomApiService _getRandomApiService;
-        private readonly IProducer<Null, string> _producer;        
-        public RandomApiController(IGetRandomApiService getRandomApiService,ProducerConfig config)
+        public RandomApiController(IGetRandomApiService getRandomApiService)
         {
             _getRandomApiService = getRandomApiService;
-            _producer = new ProducerBuilder<Null, string>(config).Build();
         }
         
         [HttpGet]
@@ -23,23 +19,6 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
             var cardInfoDto = await _getRandomApiService.GetRandomName();
             
             return Ok(cardInfoDto);
-        }
-        
-        [HttpPost]
-        public IActionResult SendMessage([FromBody] string message)
-        {
-            try
-            {
-                var topic = "test-topic";
-
-                var deliveryReport = _producer.ProduceAsync(topic, new Message<Null, string> { Value = message }).Result;
-
-                return Ok($"Сообщение успешно отправлено на Partition: {deliveryReport.TopicPartitionOffset}");
-            }
-            catch (ProduceException<Null, string> e)
-            {
-                return BadRequest($"Ошибка отправки сообщения: {e.Error.Reason}");
-            }
         }
     }
 }

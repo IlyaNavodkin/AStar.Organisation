@@ -1,4 +1,5 @@
 ﻿using AStar.Organisation.Core.Domain.Entities;
+using AStar.Organisation.Core.DomainServices.IUnitOfWork;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
 
 namespace AStar.Organisation.Infrastructure.API.Utills
@@ -168,19 +169,27 @@ namespace AStar.Organisation.Infrastructure.API.Utills
         public static Product GetProduct() => 
             new() {Id = 11, Name = "Робот пылесос с китая", Description = "Моет и сосет", Price = 200};
 
-        public static void SeedTestsData(IServiceScope scope)
+        public static void SeedTestsData(IServiceProvider serviceProvider)
         {
-            var context = scope.ServiceProvider.GetRequiredService<OrganizationContext>();
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<OrganizationContext>();
+                
+                var isExist = context.Database.CanConnect();
 
-            var products = GetProducts();
-            var customers = GetCustomers();
-
-            context.Product.AddRange(products);
-            context.Customer.AddRange(customers);
-
-            context.SaveChanges();
+                if (!isExist)
+                {
+                    context.Database.EnsureCreated();
+                    
+                    var products = GetProducts();
+                    var customers = GetCustomers();
+            
+                    context.Product.AddRange(products);
+                    context.Customer.AddRange(customers);
+            
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }
