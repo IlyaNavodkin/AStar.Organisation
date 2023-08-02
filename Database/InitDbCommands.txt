@@ -1,0 +1,17 @@
+﻿Windows
+
+psql -h localhost -p 5432 -U postgres -c "CREATE DATABASE astar_organization_db;"
+
+SET PGCLIENTENCODING=utf-8
+chcp 65001
+
+psql -h localhost -p 5432 -U postgres -d astar_organization_db -f InitDb.sql
+
+
+Docker
+
+docker build -t my-postgres-image .
+
+docker run -d -p 5432:5432 --name my-postgres-container -e POSTGRES_PASSWORD=12345 my-postgres-image
+
+docker exec -it my-postgres-container psql -U postgres
