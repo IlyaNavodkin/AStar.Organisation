@@ -1,5 +1,5 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
-using AStar.Organisation.Core.DomainServices.IRepositories;
+﻿using AStar.Organisation.Core.Application.IRepositories;
+using AStar.Organisation.Core.Domain.Poco;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
 using Microsoft.EntityFrameworkCore;
 

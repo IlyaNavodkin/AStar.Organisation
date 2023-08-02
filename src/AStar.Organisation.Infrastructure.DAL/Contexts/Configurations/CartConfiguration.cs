@@ -1,4 +1,4 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
+﻿using AStar.Organisation.Core.Domain.Poco;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,18 +8,17 @@ namespace AStar.Organisation.Infrastructure.DAL.Contexts.Configurations
     {
         public void Configure(EntityTypeBuilder<Cart> builder)
         {
-            builder.HasKey(p => p.Id);
+            builder.HasKey(e => e.Id).HasName("cart_pkey");
 
-            builder.Property(p => p.CustomerId)
-                .IsRequired();
-        
-            builder.HasOne(p => p.Customer)
-                .WithMany()
-                .HasForeignKey(p => p.CustomerId)
-                .OnDelete(DeleteBehavior.SetNull);
-        
-            builder.HasIndex(pp => new { pp.CustomerId })
-                .IsUnique();
+            builder.ToTable("cart");
+
+            builder.Property(e => e.Id).HasColumnName("id");
+            builder.Property(e => e.CustomerId).HasColumnName("customerid");
+
+            builder.HasOne(d => d.Customer).WithMany(p => p.Carts)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("cart_customerid_fkey");
         }
     }
 }

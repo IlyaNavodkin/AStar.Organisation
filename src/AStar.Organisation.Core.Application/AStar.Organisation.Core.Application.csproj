@@ -9,7 +9,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AStar.Organisation.Core.Domain\AStar.Organisation.Core.Domain.csproj" />
-      <ProjectReference Include="..\AStar.Organization.Core.DomainServices\AStar.Organization.Core.DomainServices.csproj" />
     </ItemGroup>
 
 </Project>

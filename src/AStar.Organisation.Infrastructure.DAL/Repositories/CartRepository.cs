@@ -1,7 +1,11 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
-using AStar.Organisation.Core.DomainServices.IRepositories;
+﻿using AStar.Organisation.Core.Application.Dtos;
+using AStar.Organisation.Core.Application.IRepositories;
+using AStar.Organisation.Core.Domain.Poco;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using NpgsqlTypes;
 
 namespace AStar.Organisation.Infrastructure.DAL.Repositories
 {
@@ -40,6 +44,21 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
             
             if(entity != null) 
                 _context.Cart.Remove(entity);
+        }
+        
+        public async Task<IEnumerable<CartRowProductDto>> GetCartRowProductsById(int cartId)
+        {
+            var query = @"
+            SELECT c.Id AS CartId, p.Name AS ProductName, p.Description AS ProductDescription, p.Price AS ProductPrice
+            FROM cart c
+            INNER JOIN cartproduct cp ON c.Id = cp.cartid
+            INNER JOIN product p ON cp.productid = p.Id
+            WHERE c.Id = @CartId";
+
+            var parameters = new { CartId = cartId };
+            var dbConnection = _context.Database.GetDbConnection();
+            
+            return await dbConnection.QueryAsync<CartRowProductDto>(query, parameters);
         }
     }
 }

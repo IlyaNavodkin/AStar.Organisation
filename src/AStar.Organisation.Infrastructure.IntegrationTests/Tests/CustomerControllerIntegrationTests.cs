@@ -191,7 +191,7 @@ namespace AStar.Organisation.Infrastructure.IntegrationTests.Tests
 
             customerDtos.Name = "Новое имя";
             customerDtos.Email = "newEmail@gmail.com";
-            customerDtos.Phone = "880021212";
+            customerDtos.Phone = 880021212;
 
             var updateResponse = await client.PutAsync("api/Customer/Update", 
                 new StringContent(JsonSerializer.Serialize(customerDtos), Encoding.UTF8, "application/json"));

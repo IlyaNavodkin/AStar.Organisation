@@ -1,5 +1,4 @@
 ﻿using AStar.Organisation.Core.Application.IServices;
-using AStar.Organisation.Core.DomainServices.IUnitOfWork;
 using AStar.Organisation.Infrastructure.API.Middlewares;
 using AStar.Organisation.Infrastructure.API.Services;
 using AStar.Organisation.Infrastructure.API.Utills;
@@ -63,7 +62,7 @@ namespace AStar.Organisation.Infrastructure.API
                 endpoints.MapControllers();
             });
             
-            EntityInitilizeUtill.SeedTestsData(app.ApplicationServices);
+            // EntityInitilizeUtill.SeedTestsData(app.ApplicationServices);
         }
     }
 }

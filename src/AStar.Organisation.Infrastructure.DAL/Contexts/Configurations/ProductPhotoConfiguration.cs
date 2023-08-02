@@ -1,4 +1,4 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
+﻿using AStar.Organisation.Core.Domain.Poco;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,21 +8,20 @@ namespace AStar.Organisation.Infrastructure.DAL.Contexts.Configurations
     {
         public void Configure(EntityTypeBuilder<ProductPhoto> builder)
         {
-            builder.HasKey(p => p.Id);
-        
-            builder.Property(p => p.Url)
-                .IsRequired();
+            builder.HasKey(e => e.Id).HasName("productphoto_pkey");
 
-            builder.Property(p => p.ProductId)
-                .IsRequired();
+            builder.ToTable("productphoto");
 
-            builder.HasOne(p => p.Product)
-                .WithMany()
-                .HasForeignKey(p => p.ProductId)
-                .OnDelete(DeleteBehavior.SetNull);
-        
-            builder.HasIndex(pp => new { pp.Url, pp.ProductId })
-                .IsUnique();
+            builder.Property(e => e.Id).HasColumnName("id");
+            builder.Property(e => e.ProductId).HasColumnName("productid");
+            builder.Property(e => e.Url)
+                .HasMaxLength(255)
+                .HasColumnName("url");
+
+            builder.HasOne(d => d.Product).WithMany(p => p.ProductPhotos)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("productphoto_productid_fkey");
         }
     }
 }

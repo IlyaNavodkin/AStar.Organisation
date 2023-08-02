@@ -1,6 +1,6 @@
 ﻿using AStar.Organisation.Core.Application.Dtos;
-using AStar.Organisation.Core.Domain.Entities;
-using AStar.Organisation.Core.DomainServices.IUnitOfWork;
+using AStar.Organisation.Core.Application.IUnitOfWork;
+using AStar.Organisation.Core.Domain.Poco;
 using AStar.Organisation.Infrastructure.API.Utills;
 using AStar.Organization.Infrastructure.BLL.Services;
 using AStar.Organization.Infrastructure.BLL.Validators;

@@ -9,17 +9,17 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     [Route("api/[controller]/[action]")]
     public class CartController : Controller, ICrudableController<CartDto>
     {
-        private readonly ICartService _customerService;
+        private readonly ICartService _cartService;
 
-        public CartController(ICartService customerService)
+        public CartController(ICartService cartService)
         {
-            _customerService = customerService;
+            _cartService = cartService;
         }
         
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var dtos =  await _customerService.GetAll();
+            var dtos =  await _cartService.GetAll();
             
             return Ok(dtos);
         }
@@ -27,7 +27,7 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetById(int id)
         {
-            var dto =  await _customerService.GetById(id);
+            var dto =  await _cartService.GetById(id);
             
             return Ok(dto);
         }
@@ -35,7 +35,7 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(CartDto dto)
         {
-            await _customerService.Update(dto);
+            await _cartService.Update(dto);
             
             return new ContentResult
             {
@@ -47,7 +47,7 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CartDto dto)
         {
-            await _customerService.Create(dto);
+            await _cartService.Create(dto);
             
             return new ContentResult
             {
@@ -59,13 +59,21 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            await _customerService.Delete(id);
+            await _cartService.Delete(id);
             
             return new ContentResult
             {
                 Content = $"Корзина с id[{id}] удалена.",
                 StatusCode = 200
             };
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetCartRowProductsById(int cartId)
+        {
+            var dtos =  await _cartService.GetCartRowProductsById(cartId);
+            
+            return Ok(dtos);
         }
     }
 }

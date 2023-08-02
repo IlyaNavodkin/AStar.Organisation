@@ -1,7 +1,7 @@
 ﻿using AStar.Organisation.Core.Application.Dtos;
 using AStar.Organisation.Core.Application.IServices;
-using AStar.Organisation.Core.Domain.Entities;
-using AStar.Organisation.Core.DomainServices.IUnitOfWork;
+using AStar.Organisation.Core.Application.IUnitOfWork;
+using AStar.Organisation.Core.Domain.Poco;
 using AStar.Organization.Infrastructure.BLL.Exceptions;
 using AStar.Organization.Infrastructure.BLL.Validators;
 using FluentValidation;
@@ -82,6 +82,13 @@ namespace AStar.Organization.Infrastructure.BLL.Services
             
             _unitOfWork.CartRepository.Delete(id);
             _unitOfWork.SaveChanges();
+        }
+
+        public async Task<IEnumerable<CartRowProductDto>> GetCartRowProductsById(int cartId)
+        {
+            var entities = await _unitOfWork.CartRepository.GetCartRowProductsById(cartId);
+
+            return entities;
         }
     }
 }

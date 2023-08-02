@@ -1,4 +1,4 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
+﻿using AStar.Organisation.Core.Domain.Poco;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,20 +8,20 @@ namespace AStar.Organisation.Infrastructure.DAL.Contexts.Configurations
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.HasKey(p => p.Id);
+            builder.HasKey(e => e.Id).HasName("product_pkey");
 
-            builder.Property(p => p.Name)
+            builder.ToTable("product");
+
+            builder.Property(e => e.Id).HasColumnName("id");
+            builder.Property(e => e.Description)
                 .HasMaxLength(255)
-                .IsRequired();
-        
-            builder.Property(p => p.Price)
-                .IsRequired();
-        
-            builder.Property(p => p.Description)
-                .IsRequired();
-        
-            builder.HasIndex(pp => new { pp.Name, pp.Description })
-                .IsUnique();
+                .HasColumnName("description");
+            
+            builder.Property(e => e.Name)
+                .HasMaxLength(255)
+                .HasColumnName("name");
+            
+            builder.Property(e => e.Price).HasColumnName("price");
         }
     }
 }

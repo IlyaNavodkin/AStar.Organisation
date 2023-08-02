@@ -1,6 +1,6 @@
 ﻿using System.Data;
-using AStar.Organisation.Core.DomainServices.IRepositories;
-using AStar.Organisation.Core.DomainServices.IUnitOfWork;
+using AStar.Organisation.Core.Application.IRepositories;
+using AStar.Organisation.Core.Application.IUnitOfWork;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
 using Microsoft.Extensions.Configuration;
 using Npgsql;

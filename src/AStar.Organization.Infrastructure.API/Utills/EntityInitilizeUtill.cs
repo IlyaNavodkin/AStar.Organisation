@@ -1,5 +1,4 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
-using AStar.Organisation.Core.DomainServices.IUnitOfWork;
+﻿using AStar.Organisation.Core.Domain.Poco;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
 
 namespace AStar.Organisation.Infrastructure.API.Utills
@@ -15,79 +14,79 @@ namespace AStar.Organisation.Infrastructure.API.Utills
                     Id = 1,
                     Name = "Иванов Иван",
                     Email = "ivanov@example.com",
-                    Phone = "1234567890"
+                    Phone = 1234567890
                 },
                 new Customer
                 {
                     Id = 2,
                     Name = "Петров Петр",
                     Email = "petrov@example.com",
-                    Phone = "9876543210"
+                    Phone = 9876543210
                 },
                 new Customer
                 {
                     Id = 3,
                     Name = "Сидорова Елена",
                     Email = "sidorova@example.com",
-                    Phone = "5555555555"
+                    Phone = 5555555555
                 },
                 new Customer
                 {
                     Id = 4,
                     Name = "Смирнова Ольга",
                     Email = "smirnova@example.com",
-                    Phone = "1111111111"
+                    Phone = 1111111111
                 },
                 new Customer
                 {
                     Id = 5,
                     Name = "Кузнецов Алексей",
                     Email = "kuznetsov@example.com",
-                    Phone = "2222222222"
+                    Phone = 2222222222
                 },
                 new Customer
                 {
                     Id = 6,
                     Name = "Васильева Мария",
                     Email = "vasilieva@example.com",
-                    Phone = "3333333333"
+                    Phone = 3333333333
                 },
                 new Customer
                 {
                     Id = 7,
                     Name = "Николаева Анна",
                     Email = "nikolaeva@example.com",
-                    Phone = "4444444444"
+                    Phone = 4444444444
                 },
                 new Customer
                 {
                     Id = 8,
                     Name = "Морозов Денис",
                     Email = "morozov@example.com",
-                    Phone = "6666666666"
+                    Phone = 6666666666
                 },
                 new Customer
                 {
                     Id = 9,
                     Name = "Егоров Дмитрий",
                     Email = "egorov@example.com",
-                    Phone = "7777777777"
+                    Phone = 7777777777
                 },
                 new Customer
                 {
                     Id = 10,
                     Name = "Лебедева Алина",
                     Email = "lebedeva@example.com",
-                    Phone = "8888888888"
+                    Phone = 8888888888
                 }
             };
         }
 
         public static Customer GetValidCustomer() => 
-            new() {Id = 11, Name = "Владимир Владимирович", Email = "VVP@gmail.com", Phone = "880055535"};
+            new() {Id = 11, Name = "Владимир Владимирович", Email = "VVP@gmail.com", Phone = 880055535};
         
         public static Customer GetNotValidCustomer() => 
-            new() {Id = 11, Name = "В", Email = "VVP@gmail.com", Phone = "880055535"};
+            new() {Id = 11, Name = "В", Email = "VVP@gmail.com", Phone = 880055535};
         
         public static List<Product> GetProducts()
         {
@@ -179,15 +178,7 @@ namespace AStar.Organisation.Infrastructure.API.Utills
 
                 if (!isExist)
                 {
-                    context.Database.EnsureCreated();
-                    
-                    var products = GetProducts();
-                    var customers = GetCustomers();
-            
-                    context.Product.AddRange(products);
-                    context.Customer.AddRange(customers);
-            
-                    context.SaveChanges();
+                    throw new Exception("Database is not found");
                 }
             }
         }

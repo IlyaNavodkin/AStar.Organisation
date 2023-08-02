@@ -1,4 +1,4 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
+﻿using AStar.Organisation.Core.Domain.Poco;
 using AStar.Organisation.Infrastructure.DAL.Contexts.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,13 +18,11 @@ namespace AStar.Organisation.Infrastructure.DAL.Contexts
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new ProductConfiguration());
-            modelBuilder.ApplyConfiguration(new ProductPhotoConfiguration());
             modelBuilder.ApplyConfiguration(new CartConfiguration());
             modelBuilder.ApplyConfiguration(new CartProductConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
-            
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductPhotoConfiguration());
         }
     }
 }

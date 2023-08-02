@@ -1,5 +1,5 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
-using AStar.Organisation.Core.DomainServices.IUnitOfWork;
+﻿using AStar.Organisation.Core.Application.IUnitOfWork;
+using AStar.Organisation.Core.Domain.Poco;
 using AStar.Organisation.Infrastructure.DAL.Contexts;
 using FluentValidation;
 

@@ -1,4 +1,4 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
+﻿using AStar.Organisation.Core.Domain.Poco;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,23 +8,23 @@ namespace AStar.Organisation.Infrastructure.DAL.Contexts.Configurations
     {
         public void Configure(EntityTypeBuilder<CartProduct> builder)
         {
-            builder.HasKey(p => p.Id);
+            builder.HasKey(e => e.Id).HasName("cartproduct_pkey");
 
-            builder.Property(p => p.CartId)
-                .IsRequired();
-        
-            builder.HasOne(p => p.Cart)
-                .WithMany()
-                .HasForeignKey(p => p.CartId)
-                .OnDelete(DeleteBehavior.SetNull);
-        
-            builder.Property(p => p.ProductId)
-                .IsRequired();
-        
-            builder.HasOne(p => p.Product)
-                .WithMany()
-                .HasForeignKey(p => p.ProductId)
-                .OnDelete(DeleteBehavior.SetNull);
+            builder.ToTable("cartproduct");
+
+            builder.Property(e => e.Id).HasColumnName("id");
+            builder.Property(e => e.CartId).HasColumnName("cartid");
+            builder.Property(e => e.ProductId).HasColumnName("productid");
+
+            builder.HasOne(d => d.Cart).WithMany(p => p.CartProducts)
+                .HasForeignKey(d => d.CartId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("cartproduct_cartid_fkey");
+
+            builder.HasOne(d => d.Product).WithMany(p => p.CartProducts)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("cartproduct_productid_fkey");
         }
     }
 }

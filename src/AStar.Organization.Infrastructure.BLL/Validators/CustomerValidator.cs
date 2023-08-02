@@ -1,4 +1,4 @@
-﻿using AStar.Organisation.Core.Domain.Entities;
+﻿using AStar.Organisation.Core.Domain.Poco;
 using FluentValidation;
 
 namespace AStar.Organization.Infrastructure.BLL.Validators
