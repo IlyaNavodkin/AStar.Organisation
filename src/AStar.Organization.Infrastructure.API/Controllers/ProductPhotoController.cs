@@ -10,10 +10,12 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     public class ProductPhotoController : Controller, ICrudableController<ProductPhotoDto>
     {
         private readonly IProductPhotoService _productPhotoService;
+        private readonly IPaginationService _paginationService;
 
-        public ProductPhotoController(IProductPhotoService productPhotoService)
+        public ProductPhotoController(IProductPhotoService productPhotoService, IPaginationService paginationService)
         {
             _productPhotoService = productPhotoService;
+            _paginationService = paginationService;
         }
         
         [HttpGet]
@@ -28,6 +30,15 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var dto =  await _productPhotoService.GetById(id);
+            
+            return Ok(dto);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetPaginateItems(int pageNumber, int pageSize)
+        {
+            var items = await _productPhotoService.GetAll();
+            var dto = _paginationService.GetPaginationInfo<ProductPhotoDto>(pageNumber, pageSize, items);
             
             return Ok(dto);
         }

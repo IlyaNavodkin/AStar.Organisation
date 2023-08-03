@@ -10,10 +10,12 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     public class CustomerController : Controller, ICrudableController<CustomerDto>
     {
         private readonly ICustomerService _customerService;
+        private readonly IPaginationService _paginationService;
 
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(ICustomerService customerService, IPaginationService paginationService)
         {
             _customerService = customerService;
+            _paginationService = paginationService;
         }
         
         [HttpGet]
@@ -28,6 +30,15 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var dto =  await _customerService.GetById(id);
+            
+            return Ok(dto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPaginateItems(int pageNumber, int pageSize)
+        {
+            var items = await _customerService.GetAll();
+            var dto = _paginationService.GetPaginationInfo<CustomerDto>(pageNumber, pageSize, items);
             
             return Ok(dto);
         }

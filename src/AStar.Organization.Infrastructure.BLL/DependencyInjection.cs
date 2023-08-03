@@ -15,6 +15,7 @@ namespace AStar.Organization.Infrastructure.BLL
             services.AddTransient<ProductPhotoValidator>();
             services.AddTransient<CartProductValidator>();
             
+            services.AddTransient<IPaginationService, PaginationService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<ICartProductService, CartProductService>();

@@ -10,10 +10,12 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
     public class CartController : Controller, ICrudableController<CartDto>
     {
         private readonly ICartService _cartService;
+        private readonly IPaginationService _paginationService;
 
-        public CartController(ICartService cartService)
+        public CartController(ICartService cartService, IPaginationService paginationService)
         {
             _cartService = cartService;
+            _paginationService = paginationService;
         }
         
         [HttpGet]
@@ -28,6 +30,15 @@ namespace AStar.Organisation.Infrastructure.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var dto =  await _cartService.GetById(id);
+            
+            return Ok(dto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPaginateItems(int pageNumber, int pageSize)
+        {
+            var items = await _cartService.GetAll();
+            var dto = _paginationService.GetPaginationInfo<CartDto>(pageNumber, pageSize, items);
             
             return Ok(dto);
         }

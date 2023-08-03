@@ -4,6 +4,5 @@ namespace AStar.Organisation.Core.Application.IServices
 {
     public interface IProductService : ICrudable<ProductDto>
     {
-
     }
 }

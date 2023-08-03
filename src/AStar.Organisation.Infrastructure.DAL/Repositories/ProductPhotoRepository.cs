@@ -19,6 +19,13 @@ namespace AStar.Organisation.Infrastructure.DAL.Repositories
             return await _context.ProductPhoto.ToListAsync();
         }
      
+        public async Task<IEnumerable<ProductPhoto>> SkipAndTake(int startIndex, int andIndex)
+        {
+            var result = await _context.ProductPhoto.Skip(startIndex).Take(andIndex).ToListAsync();
+
+            return result;
+        }
+
         public async Task<ProductPhoto> GetById(int id)
         {
             return await _context.ProductPhoto.FindAsync(id);
